@@ -18,5 +18,5 @@
 ### Algorithm
 
 ### Spring
-## edwith의 web backend
+#### edwith의 web backend
 * [01. MySQL](https://github.com/96glory/TIL/blob/master/Spring/edwith-web-back-end/SQL-JDBC-Programming/01MySQL.md)
