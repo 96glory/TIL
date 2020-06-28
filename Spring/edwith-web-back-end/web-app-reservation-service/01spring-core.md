@@ -1,6 +1,6 @@
 > [참고](https://www.edwith.org/boostcourse-web-be/lecture/58969/)
 
-#1) Spring이란?
+# 1) Spring이란?
 ## Spring Framework란?
 * 엔터프라이즈급 어플리케이션을 구축할 수 있는 가벼운 솔루션
 * 모듈화가 잘 되어있음
