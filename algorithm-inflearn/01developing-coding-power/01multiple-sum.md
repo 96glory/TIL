@@ -1,6 +1,7 @@
 # 01. 1부터 N까지의 M의 
 
-```#include <iostream>
+```C++
+#include <iostream>
 
 using namespace std;
 
@@ -16,3 +17,4 @@ int main(void){
 	
 	cout << sum;
 }
+```
