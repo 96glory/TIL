@@ -1,6 +1,5 @@
-> [참고](https://www.edwith.org/boostcourse-web-be/lecture/58969/)
-
 # 1) Spring이란?
+> [참고](https://www.edwith.org/boostcourse-web-be/lecture/58969/)
 
 ## Framework란?
 * 제품이나 재료가 아닌, 반제품
@@ -38,6 +37,7 @@
 
 
 # 2) Spring IoC/DI 컨테이너
+> [참고](https://www.edwith.org/boostcourse-web-be/lecture/58970/)
 ## Container
 * 인스턴스의 생명주기를 관리하며, 생성된 인스턴스에게 추가적인 기능을 제공.
 
