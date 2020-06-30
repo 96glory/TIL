@@ -21,3 +21,5 @@
 #### edwith의 web backend
 * [01. MySQL](https://github.com/96glory/TIL/blob/master/Spring/edwith-web-back-end/SQL-JDBC-Programming/01MySQL.md)
 * [02. Spring](https://github.com/96glory/TIL/blob/master/Spring/edwith-web-back-end/web-app-reservation-service/01spring-core.md)
+* [03. xml 파일을 이용한 설정](https://github.com/96glory/TIL/blob/master/Spring/edwith-web-back-end/web-app-reservation-service/02xml.md)
+* [04. Java Config과 @를 이용한 설정](https://github.com/96glory/TIL/blob/master/Spring/edwith-web-back-end/web-app-reservation-service/03JavaConfig.md)
