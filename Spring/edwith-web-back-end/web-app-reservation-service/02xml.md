@@ -1,6 +1,6 @@
 # 3) xml 파일을 이용한 설정
 > [참고](https://www.edwith.org/boostcourse-web-be/lecture/58971/)
-> [작성한 코드]https://github.com/96glory/boostcourse-web-be/tree/master/boostcource-web-be-2/src/main/java/kr/or/connect)
+> [작성한 코드](https://github.com/96glory/boostcourse-web-be/tree/43edbcf151592b6a8450e9751c41b6ab90fd507e)
 
 ## maven 프로젝트에서 JDK를 사용하기 위한 플러그인
 ```xml
