@@ -26,14 +26,14 @@ public class EmbeddedWebServerApplication {
   * ServletWebServerFactoryAutoConfiguration : 서블릿 웹 서버 생성
   * TomcatServletWebServerFactoryCustomizer : 서버 커스터마이징
   * DispatcherServletAutoConfiguration : 서블릿 만들고 등록함
-  
-  ## 내장 웹 서버 응용 : 컨테이너와 포트
-  * default인 tomcat 대신에 다른 내장 서버 사용하기
-    * spring-boot-starter-web 은 default로 tomcat을 가져오므로 exclusion tag를 사용해서 제외한 뒤, 원하는 서버를 의존성 추가한다.
-    * [참고](https://docs.spring.io/spring-boot/docs/current/reference/html/howto.html#howto-embedded-web-servers)
-  * 포트 번호 바꾸기
-    * application.properties 에서 server.port=원하는포트번호
-  
+
+## 내장 웹 서버 응용 : 컨테이너와 포트
+* default인 tomcat 대신에 다른 내장 서버 사용하기
+  * spring-boot-starter-web 은 default로 tomcat을 가져오므로 exclusion tag를 사용해서 제외한 뒤, 원하는 서버를 의존성 추가한다.
+  * [참고](https://docs.spring.io/spring-boot/docs/current/reference/html/howto.html#howto-embedded-web-servers)
+* 포트 번호 바꾸기
+  * application.properties 에서 server.port=원하는포트번호
+
 ## 내장 웹 서버 응용 : HTTPS 적용하기
 * 1. keystore 생성
 * 2. keystore의 정보를 application.properties에 update
