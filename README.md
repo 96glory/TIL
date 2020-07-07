@@ -16,10 +16,19 @@
 
 ## 분류
 ### Algorithm
-* [01. 코드 구현 능력 기르기](https://github.com/96glory/TIL/tree/master/algorithm-inflearn/01developing-coding-power)
+* [01. String과 char 배열, integer 사이의 변환](https://github.com/96glory/TIL/blob/master/Algorithm/01string-char-int-conversion.md)
+* [02. C++ STL string](https://github.com/96glory/TIL/blob/master/Algorithm/02string.md)
+* [03. 여러 정렬 방식](https://github.com/96glory/TIL/blob/master/Algorithm/03sort.md)
 ### Spring
+#### 백기선의 스프링 부트 개념과 활용
+> [강의 링크](https://www.inflearn.com/course/%EC%8A%A4%ED%94%84%EB%A7%81%EB%B6%80%ED%8A%B8/)
+* [01. 스프링 부트의 의존성 관리](https://github.com/96glory/TIL/blob/master/Spring/whiteship-spring-boot/01dependency-management.md)
+* [02. 자동 설정](https://github.com/96glory/TIL/blob/master/Spring/whiteship-spring-boot/02auto-configuration.md)
+* [03. 내장 웹 서버](https://github.com/96glory/TIL/blob/master/Spring/whiteship-spring-boot/03embedded-web-server.md)
+
 #### edwith의 web backend
-* [01. MySQL](https://github.com/96glory/TIL/blob/master/Spring/edwith-web-back-end/SQL-JDBC-Programming/01MySQL.md)
-* [02. Spring](https://github.com/96glory/TIL/blob/master/Spring/edwith-web-back-end/web-app-reservation-service/01spring-core.md)
-* [03. xml 파일을 이용한 설정](https://github.com/96glory/TIL/blob/master/Spring/edwith-web-back-end/web-app-reservation-service/02xml.md)
-* [04. Java Config과 @를 이용한 설정](https://github.com/96glory/TIL/blob/master/Spring/edwith-web-back-end/web-app-reservation-service/03JavaConfig.md)
+* [01. Spring](https://github.com/96glory/TIL/blob/master/Spring/edwith-web-back-end/web-app-reservation-service/01spring-core.md)
+* [02. xml 파일을 이용한 설정](https://github.com/96glory/TIL/blob/master/Spring/edwith-web-back-end/web-app-reservation-service/02xml.md)
+* [03. Java Config과 @를 이용한 설정](https://github.com/96glory/TIL/blob/master/Spring/edwith-web-back-end/web-app-reservation-service/03JavaConfig.md)
+* [04. Spring Test](https://github.com/96glory/TIL/blob/master/Spring/edwith-web-back-end/web-app-reservation-service/04spring-test.md)
+* [05. Spring JDBC](https://github.com/96glory/TIL/blob/master/Spring/edwith-web-back-end/web-app-reservation-service/05spring-JDBC.md)
