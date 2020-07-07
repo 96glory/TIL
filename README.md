@@ -25,6 +25,7 @@
 * [01. 스프링 부트의 의존성 관리](https://github.com/96glory/TIL/blob/master/Spring/whiteship-spring-boot/01dependency-management.md)
 * [02. 자동 설정](https://github.com/96glory/TIL/blob/master/Spring/whiteship-spring-boot/02auto-configuration.md)
 * [03. 내장 웹 서버](https://github.com/96glory/TIL/blob/master/Spring/whiteship-spring-boot/03embedded-web-server.md)
+* [04. SpringApplication](https://github.com/96glory/TIL/blob/master/Spring/whiteship-spring-boot/04SpringApplication.md)
 
 #### edwith의 web backend
 * [01. Spring](https://github.com/96glory/TIL/blob/master/Spring/edwith-web-back-end/web-app-reservation-service/01spring-core.md)
