@@ -1,5 +1,5 @@
 # 외부 설정
-> [작성한 코드](https://github.com/96glory/whiteship-spring-boot/tree/fef2b10b09354805abe8717b7daebe6779861fc4)
+> [작성한 코드](https://github.com/96glory/whiteship-spring-boot/tree/fef2b10b09354805abe8717b7daebe6779861fc4/externalconfig)
 
 ## 외부 설정 파일 : application에서 사용하는 여러 설정 값들을 설정
   * application.properties : key - value 형태로 삽입
