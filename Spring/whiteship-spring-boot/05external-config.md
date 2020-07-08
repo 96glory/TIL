@@ -1,7 +1,10 @@
 # 외부 설정
-* 외부 설정 파일 : application에서 사용하는 여러 설정 값들을 설정
+> [작성한 코드](https://github.com/96glory/whiteship-spring-boot/tree/fef2b10b09354805abe8717b7daebe6779861fc4)
+
+## 외부 설정 파일 : application에서 사용하는 여러 설정 값들을 설정
   * application.properties : key - value 형태로 삽입
-* 프로퍼티 우선순위
+  
+## 프로퍼티 우선순위
   1. 유저 홈 디렉토리에 있는 spring-boot-dev-tools.properties
   2. 테스트에 있는 @TestPropertySource
     * @TestPropertySource(locations = "classpath:/test.properties")
@@ -29,13 +32,13 @@
   16. @PropertySource
   17. 기본 프로퍼티 (SpringApplication.setDefaultProperties)
 
-* application.properties 우선 순위 (높은 순위가 낮은 순위를 덮어 쓴다.(겹치는 것만))
+## application.properties 우선 순위 (높은 순위가 낮은 순위를 덮어 쓴다.(겹치는 것만))
   1. file:./config/
   2. file:./
   3. classpath:/config/
   4. classpath:/
 
-* @ConfigurationProperties
+## @ConfigurationProperties
   * 외부 설정이 많고, 같은 key가 많을 경우 그것들을 묶어서 하나의 bean으로 등록하는 방법
   ```xml
   <dependency>
