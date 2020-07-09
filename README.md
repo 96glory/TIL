@@ -19,6 +19,8 @@
 * [01. String과 char 배열, integer 사이의 변환](https://github.com/96glory/TIL/blob/master/Algorithm/01string-char-int-conversion.md)
 * [02. C++ STL string](https://github.com/96glory/TIL/blob/master/Algorithm/02string.md)
 * [03. 여러 정렬 방식](https://github.com/96glory/TIL/blob/master/Algorithm/03sort.md)
+* [04. 요세푸스 문제](https://github.com/96glory/TIL/blob/master/Algorithm/04josephus-problem.md)
+
 ### Spring
 #### 백기선의 스프링 부트 개념과 활용
 > [강의 링크](https://www.inflearn.com/course/%EC%8A%A4%ED%94%84%EB%A7%81%EB%B6%80%ED%8A%B8/)
@@ -26,6 +28,9 @@
 * [02. 자동 설정](https://github.com/96glory/TIL/blob/master/Spring/whiteship-spring-boot/02auto-configuration.md)
 * [03. 내장 웹 서버](https://github.com/96glory/TIL/blob/master/Spring/whiteship-spring-boot/03embedded-web-server.md)
 * [04. SpringApplication](https://github.com/96glory/TIL/blob/master/Spring/whiteship-spring-boot/04SpringApplication.md)
+* [05. 외부 설정](https://github.com/96glory/TIL/blob/master/Spring/whiteship-spring-boot/05external-config.md)
+* [06. 프로파일](https://github.com/96glory/TIL/blob/master/Spring/whiteship-spring-boot/06profile.md)
+* [07. spring-boot-starter-test](https://github.com/96glory/TIL/blob/master/Spring/whiteship-spring-boot/07spring-boot-starter-test.md)
 
 #### edwith의 web backend
 * [01. Spring](https://github.com/96glory/TIL/blob/master/Spring/edwith-web-back-end/web-app-reservation-service/01spring-core.md)
