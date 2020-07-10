@@ -21,6 +21,9 @@
 * [03. 여러 정렬 방식](https://github.com/96glory/TIL/blob/master/Algorithm/03sort.md)
 * [04. 요세푸스 문제](https://github.com/96glory/TIL/blob/master/Algorithm/04josephus-problem.md)
 
+### Data Structure
+* [01. stack](https://github.com/96glory/TIL/blob/master/DataStructure/01stack.md)
+
 ### Spring
 #### 백기선의 스프링 부트 개념과 활용
 > [강의 링크](https://www.inflearn.com/course/%EC%8A%A4%ED%94%84%EB%A7%81%EB%B6%80%ED%8A%B8/)
