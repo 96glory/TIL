@@ -25,7 +25,7 @@
   ```
 
 * C++ STL stack 사용
-  * stack<int> s;
+  * stack\<int\> s;
   * s.push(element) : top에 원소를 추가
   * s.pop() : top에 있는 원소를 삭제
   * s.top() : top에 있는 원소를 반환
