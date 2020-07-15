@@ -94,7 +94,7 @@ int main(){
 }
 ```
 
-## 병합 정렬
+## 4. 병합 정렬
 ```cpp
 #include <iostream>
 using namespace std;
