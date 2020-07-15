@@ -46,3 +46,18 @@ int main(){
 	postorder(1);	printf("\n");
 }
 ```
+* 문제 푸는 방식
+```cpp
+void dfs(int index){
+	if(/* dfs를 멈추게 하는 조건 */){
+		/* dfs 멈추었을 때 해야하는 행동 ex) 출력, cnt++, ... */
+	}
+	else{
+		/* dfs 방식으로 풀기 위한 값 설정 */
+	}
+}
+
+int main(){
+	dfs(1);
+}
+```
