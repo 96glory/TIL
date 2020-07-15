@@ -42,7 +42,7 @@ void postorder(int v){
 
 int main(){
 	preorder(1);	printf("\n");
-	inorder(1);		printf("\n");
+	inorder(1);	printf("\n");
 	postorder(1);	printf("\n");
 }
 ```
