@@ -1,4 +1,14 @@
 # 스프링 부트가 제공하는 스프링 웹 MVC를 위한 편의기능
+> 목차
+> 1. [스프링 웹 MVC란?](#스프링-웹-MVC란?)
+> 2. [HttpMessageConverters](#httpmessageconverters)
+> 3. [ViewResolver](#viewresolver)
+> 4. [정적 리소스 지원](#정적-리소스-지원)
+> 5. [웹 JAR](#웹-jar)
+> 6. [index 페이지와 favicon](#index-페이지와-favicon)
+> 7. [thymeleaf](#thymeleaf)
+
+
 ## 스프링 웹 MVC란?
 * 서블릿 API를 기반으로 구축된 웹 프레임워크
 * 스프링 MVC 확장 : @Configuration + WebMvcConfiguration
@@ -124,3 +134,95 @@
   </body>
   </html>
   ```
+
+## index 페이지와 favicon
+* index 페이지 (welcome page)
+  * root page를 요청했을 때 보여지는 페이지
+  * 기본 리소스 위치에서
+    * index.html 찾아 보고, 있으면 제공
+    * index.템플릿 찾아 보고, 있으면 제공
+    * 위의 두가지 경우가 해당하지 않으면 에러 페이지 제공
+* favicon
+  * 인터넷 웹 브라우저의 주소창에 표시되는 웹사이트나 웹페이지를 대표하는 아이콘
+  * [favicon.io](https://favicon.io/)에서 favicon을 만들 수 있다.
+  * 기본 리소스 위치에 두면 알아서 탐색한다. (파일 이름 : favicon.ico)
+  * favicon이 보이지 않을 경우?
+    1. localhost:8080/favicon.ico 에 접속.
+    2. enter 후 ctrl + f5
+    3. 브라우저 재시작
+    
+## thymeleaf
+* 웹 mvc로 동적 콘텐츠(view)를 생성하는 템플릿 엔진 중 하나
+  * FreeMarker, Groovy, Thymeleaf, Mustache, ...
+* thymeleaf 사용하기
+  ```xml
+  <dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-thymeleaf</artifactId>
+  </dependency>
+  ```
+  * 위 의존성을 추가하면 템플릿 파일의 위치를 /src/main/resources/template/ 에 두어야 한다.
+  * tip : intellij에서 html 문서 자동완성을 위해서 ! 이후 tab 키를 누르면 된다.
+  * 참고할 문서
+    * [깊게 배우기](https://www.thymeleaf.org/)
+    * [짧게 배우기](https://www.thymeleaf.org/doc/articles/standarddialect5minutes.html)
+  * 시작하기
+    ```xml
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-thymeleaf</artifactId>
+    </dependency>
+    ```
+  * thymeleaf를 활용해 만든 html
+    ```html
+    <!doctype html>
+    <html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <title>test thymeleaf</title>
+    </head>
+    <body>
+      <h1 th:text="${name}">Name</h1>
+    </body>
+    </html>
+    ```
+  * Controller
+    ```java
+    @Controller
+    public class SampleController {
+        @GetMapping("/hello")
+        public String hello(Model model){
+            model.addAttribute("name", "glory");
+            return "hello";
+        }
+    }
+    ```
+  * test code
+    ```java
+    @RunWith(SpringRunner.class)
+    @WebMvcTest(SampleController.class)
+    public class SampleControllerTest {
+        @Autowired
+        MockMvc mockMvc;
+
+        @Test
+        public void hello() throws Exception{
+            // 요청 "/hello"
+            // 응답
+            //      - 모델 name : glory
+            //      - 뷰 이름 : hello
+            mockMvc.perform(get("/hello"))
+                    // 요청 결과가 200이니?
+                    .andExpect(status().isOk())
+                    // view의 이름이 hello니?
+                    .andExpect(view().name("hello"))
+                    // model 안에 ("name", "glory")라는 attribute가 있니?
+                    .andExpect(model().attribute("name", "glory"))
+                    // view 안에 glory라는 content가 있니?
+                    .andExpect(content().string(containsString("glory")))
+                    .andDo(print())
+            ;
+        }
+    }
+    ```
+  * [작성한 코드 전문](https://github.com/96glory/whiteship-spring-boot/tree/61e41445c1bd58b8f448a81061c6554327e5438a/springwebmvc2/src)
