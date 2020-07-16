@@ -1,4 +1,4 @@
-# 스프링 웹 MVC
+# 스프링 부트가 제공하는 스프링 웹 MVC를 위한 편의기능
 ## 스프링 웹 MVC란?
 * 서블릿 API를 기반으로 구축된 웹 프레임워크
 * 스프링 MVC 확장 : @Configuration + WebMvcConfiguration
@@ -84,3 +84,43 @@
         }
       }
       ```
+
+## 웹 JAR
+* 웹 JAR란?
+  * 클라이언트에서 사용하는 JS Library(bootstrap, react, jQuery, ...)를 jar 파일로 추가할 수 있다.
+* 예시 : jQuery를 사용자 컴퓨터에 Web Jar 형식으로 추가하기
+  ```xml
+  <!-- jQuery -->
+  <dependency>
+      <groupId>org.webjars.bower</groupId>
+      <artifactId>jquery</artifactId>
+      <version>3.5.1</version>
+  </dependency>
+
+  <!-- html 문서에서 version 생략 기능 -->
+  <dependency>
+    <groupId>org.webjars</groupId>
+    <artifactId>webjars-locator-core</artifactId>
+    <version>0.46</version>
+  </dependency>
+  ```
+  ```html
+  <!DOCTYPE HTML>
+  <html>
+  <head>
+      <meta charset="UTF-8">
+      <title>Title</title>
+  </head>
+  <body>
+  Hello, static resource.
+
+  <script src="/webjars/jquery/dist/jquery.min.js"></script>
+  <script>
+      $(function() {
+          alert("ready!");
+      });
+  </script>
+
+  </body>
+  </html>
+  ```
