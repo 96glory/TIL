@@ -7,8 +7,8 @@
 > 5. [웹 JAR](#웹-jar)
 > 6. [index 페이지와 favicon](#index-페이지와-favicon)
 > 7. [thymeleaf](#thymeleaf)
-
-
+> 8. [HtmlUnit](#htmlunit)
+> 9. [ExceptionHandler](#exceptionhandler)
 ## 스프링 웹 MVC란?
 * 서블릿 API를 기반으로 구축된 웹 프레임워크
 * 스프링 MVC 확장 : @Configuration + WebMvcConfiguration
@@ -226,3 +226,80 @@
     }
     ```
   * [작성한 코드 전문](https://github.com/96glory/whiteship-spring-boot/tree/61e41445c1bd58b8f448a81061c6554327e5438a/springwebmvc2/src)
+  
+## HtmlUnit
+* 좀 더 전문적인 HTML template view test, html을 unit test 하기 위한 tool
+* [참고할 문서](https://htmlunit.sourceforge.io/gettingStarted.html)
+* 의존성
+  ```xml
+  <dependency>
+    <groupId>org.seleniumhq.selenium</groupId>
+    <artifactId>htmlunit-driver</artifactId>
+    <scope>test</scope>
+  </dependency>
+  <dependency>
+    <groupId>net.sourceforge.htmlunit</groupId>
+    <artifactId>htmlunit</artifactId>
+    <scope>test</scope>
+  </dependency>
+  ```
+  
+## ExceptionHandler
+* 기본적으로 제공해주는 예외 처리기
+  * BasicErrorController : HTML과 JSON 응답 지원
+  * customizing : ErrorController 구현
+* 스프링 MVC 예외 처리 방식
+  * @ControllerAdvice
+  * @ExchangeHandler
+    * SampleController.class
+    ```java
+    @Controller
+    public class SampleController {
+        @GetMapping("/hello")
+        public String hello(){
+            throw new SampleException();
+        }
+
+        @ExceptionHandler(SampleException.class)
+        public @ResponseBody AppError sampleError(SampleException e){
+            AppError appError = new AppError();
+            appError.setMessage("error.app.key");
+            appError.setReason("I don't know");
+            return appError;
+        }
+    }
+    ```
+    * AppError.class
+    ```java
+    package me.glory.springwebmvc3;
+
+    public class AppError {
+        private String message;
+        private String reason;
+
+        public String getMessage() {
+            return message;
+        }
+        public void setMessage(String message) {
+            this.message = message;
+        }
+        public String getReason() {
+            return reason;
+        }
+        public void setReason(String reason) {
+            this.reason = reason;
+        }
+    }
+    ```
+    * SampleError.class
+    ```java
+    public class SampleException extends RuntimeException {
+
+    }
+    ```
+* custom error page 
+  * 상태 코드 값에 따라 에러 페이지 보여주기
+  * src/main/resources/static|template/error/
+    * 404.html
+    * 5xx.html
+    * [작성한 코드](https://github.com/96glory/whiteship-spring-boot/tree/dd1009e0b597e1f111e91a09ae96f8f7b5c50778/springwebmvc3/src)
