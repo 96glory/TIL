@@ -1,4 +1,11 @@
 # 스프링 데이터
+> 목차
+> 1. [인메모리 데이터베이스](#인메모리-데이터베이스)
+> 2. [DBCP](#dbcp)
+> 3. [PostgreSQL 설정하기](#postgresql-설정하기)
+> 4. [spring-data-jpa 소개 및 연동](#spring-data-jpa-개-및-연동)
+> 5. [데이터베이스 초기화](#데이터베이스-초기화)
+
 ## 인메모리 데이터베이스
 * 데이터 스토리지의 메인 메모리에 설치되어 운영되는 방식의 데이터베이스 관리 시스템
 * 종류 : __H2__, HSQL, Derby, ...
@@ -166,18 +173,32 @@
       ```
     * Repository 인터페이스 만들기
       ```java
-      //JpaRepository<Entity의 타입, Id의 타입>
+      // JpaRepository<Entity의 타입, Id의 타입>
       public interface AccountRepository extends JpaRepository<Account, Long> {
 
       }
       ```
     * 데이터베이스 추가해주기 (ex. 인메모리 DB, postgreSQL, ...)
-      * 인메모리 DB를 사용하지 않는 경우 spring.datasource.*를 언급해주어야 한다.
+      * 인메모리 DB를 사용하지 않는 경우 spring.datasource.* 를 언급해주어야 한다.
   * 스프링 데이터 Respotiory의 테스트 만들기
+    * [작성한 코드](https://github.com/96glory/whiteship-spring-boot/blob/9df0f04325a1cd54822576326c8075841958d2b0/springdatajpa/src/test/java/me/glory/springdatajpa/account/AccountRepositoryTest.java)
     * H2 DB를 테스트 의존성에 반드시 추가시켜주어야 함.
     * @DataJpaTest(슬라이스 테스트)로 작성하는 것을 추천.
       * @SpringBootTest를 추천하지 않는다.
         * 느리다.
         * 실제 DB를 건드릴 수 있다.
 
-
+## 데이터베이스 초기화
+> [작성한 코드](https://github.com/96glory/whiteship-spring-boot/tree/697b6162dac6195d322ba21302c00a53fc483fef/springdatajpa/src)
+* JPA를 사용한 DB 초기화
+  * spring.jpa.hibernate.ddl-auto=
+    * update : 기존의 스키마를 가만히 두고 추가 혹은 변경된 것만 update함. 주로 개발할 때 사용함.
+    * ~~create~~ : 처음 띄울 때 다 지우고 새로 시작 (위험 : 실제 데이터가 날아갈 수도)
+    * ~~create-drop~~ : 애플리케이션 시작 시 create, 애플리케이션 종료 시 drop (위험 : 실제 데이터가 날아갈 수도)
+    * ~~validate~~ : ddl에 변경을 가하지 않고 검증만 함. 주로 실제 애플리케이션을 운영할 때 사용함. 새 column을 추가하면 오류 발생함.
+    * ~~none~~
+  * spring.jpa.generate-dll=true로 설정 해줘야 동작함.
+  * spring.jpa.show-sql=true : 실제 애플리케이션에 동작되는 sql를 다 볼 수 있다.
+* SQL 스크립트를 사용한 DB 초기화
+  * 추후 강의 참조
+  
