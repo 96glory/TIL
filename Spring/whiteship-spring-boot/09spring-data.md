@@ -3,7 +3,7 @@
 > 1. [인메모리 데이터베이스](#인메모리-데이터베이스)
 > 2. [DBCP](#dbcp)
 > 3. [PostgreSQL 설정하기](#postgresql-설정하기)
-> 4. [spring-data-jpa 소개 및 연동](#spring-data-jpa-개-및-연동)
+> 4. [spring-data-jpa 소개 및 연동](#spring-data-jpa-소개-및-연동)
 > 5. [데이터베이스 초기화](#데이터베이스-초기화)
 
 ## 인메모리 데이터베이스
