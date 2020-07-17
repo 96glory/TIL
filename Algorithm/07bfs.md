@@ -1,5 +1,4 @@
 # 너비 우선 탐색 (BFS : breadth-first search)
-![BFS animation](https://user-images.githubusercontent.com/52440668/87755350-cdd5ed00-c841-11ea-8448-d0604ad9a445.png)
 * 시작 정점을 방문한 후 시작 정점에 인접한 모든 정점들을 우선 방문하는 방식
 * 장점 : BFS 방식으로 탐색하면, 출발 노드에서 목표 노드까지의 최단 길이 경로라는 것을 보장한다.
 * 주로 queue와 함께 쓰임
