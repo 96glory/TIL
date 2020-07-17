@@ -27,6 +27,7 @@
 * [01. stack](https://github.com/96glory/TIL/blob/master/DataStructure/01stack.md)
 * [02. 그래프 표현](https://github.com/96glory/TIL/blob/master/DataStructure/02graph-expression.md)
 * [03. queue](https://github.com/96glory/TIL/blob/master/DataStructure/03queue.md)
+* [04. priority queue](https://github.com/96glory/TIL/blob/master/DataStructure/04priority-queue.md)
 
 ### Spring
 #### 백기선의 스프링 부트 개념과 활용
