@@ -66,3 +66,88 @@
 * 인증 관련 각종 이벤트 발생
   * DefaultAuthenticationEventPublisher 빈 등록
   * 다양한 인증 에러 핸들러 등록 가능
+
+## 시큐리티 설정 커스터마이징
+> [작성한 코드](https://github.com/96glory/whiteship-spring-boot/tree/27270da6c1ea24744451d9d74815c2351ade4c58/springsecurity2/src)
+* 웹 시큐리티 설정
+  ```java
+  @Configuration
+  public class SecurityConfig extends WebSecurityConfigurerAdapter {
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http.authorizeRequests()
+            .antMatchers("/", "/hello").permitAll()
+            .anyRequest().authenticated()
+            .and()
+            .formLogin()
+            .and()
+            .httpBasic();
+    }
+  }
+  ```
+* UserDetailsService 구현
+  ```java
+  @Service
+  public class AccountService implements UserDetailsService {
+    @Autowired
+    private AccountRepository accountRepository;
+
+    public Account createAccount(String username, String password){
+      Account account = new Account();
+      account.setUsername(username);
+      account.setPassword(password);
+      return accountRepository.save(account);
+    }
+
+    // 로그인할 떄 username을 가져와 username에 해당하는 UserDetails를 확인한다. (주로 password)
+    // password가 같은지 확인하고 같으면 승인, 틀리면 예외처리
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+      Optional<Account> byUsername = accountRepository.findByUserName(username);
+      Account account = byUsername.orElseThrow(() -> new UsernameNotFoundException(username));
+      
+      // username, password, 권한 부여 순서
+      return new User(account.getUsername(), account.getPassword(), authorities());
+    }
+
+    private Collection<? extends GrantedAuthority> authorities() {
+      return Arrays.asList(new SimpleGrantedAuthority("ROLE_USER"));
+    }
+  }
+  ```
+* 내 인증 정보 만들기
+  ```java
+  @Component
+  public class AccountRunner implements ApplicationRunner {
+
+    @Autowired
+    AccountService accountService;
+
+    @Override
+    public void run(ApplicationArguments args) throws Exception {
+      Account glory = accountService.createAccount("glory", "1234");
+      System.out.println(glory.getUsername() + " password: " + glory.getPassword());
+    }
+  }
+  ```
+* PasswordEncoder 설정 및 사용
+  * 스프링 시큐리티 상위 버전에서는 password에 encoding을 해야 로그인이 가능해짐
+  * SecurityConfig.java
+    ```java
+    @Bean
+    public PasswordEncoder passwordEncoder(){
+      return PasswordEncoderFactories.createDelegatingPasswordEncoder();
+    }
+    ```
+  * AccountService.java
+    ```java
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    public Account createAccount(String username, String password){
+      Account account = new Account();
+      account.setUsername(username);
+      account.setPassword(passwordEncoder.encode(password));
+      return accountRepository.save(account);
+    }
+    ```
