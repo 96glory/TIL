@@ -40,6 +40,7 @@
 * [06. 프로파일](https://github.com/96glory/TIL/blob/master/Spring/whiteship-spring-boot/06profile.md)
 * [07. spring-boot-starter-test](https://github.com/96glory/TIL/blob/master/Spring/whiteship-spring-boot/07spring-boot-starter-test.md)
 * [08. 스프링 부트가 제공하는 기능 in 스프링 웹 MVC](https://github.com/96glory/TIL/blob/master/Spring/whiteship-spring-boot/08spring-web-mvc.md)
+* [09. 스프링 부트가 제공하는 기능 in 스프링 데이터](https://github.com/96glory/TIL/blob/master/Spring/whiteship-spring-boot/09spring-data.md)
 
 #### edwith의 web backend
 * [01. Spring](https://github.com/96glory/TIL/blob/master/Spring/edwith-web-back-end/web-app-reservation-service/01spring-core.md)
