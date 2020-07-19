@@ -26,20 +26,55 @@
       * arr index는 원소 번호, arr 값은 집합의 번호.
   * int find(int index) : index의 집합 번호를 반환
   * void union(int a. int b) : a와 b 원소의 집합 번호를 각각 찾는다.
-  * 개선 전의 프로그램 과정
+* 개선 전의 프로그램 과정
     ![개선 전의 프로그램 과정](https://user-images.githubusercontent.com/52440668/87877101-4e017b80-ca17-11ea-8c28-fa9a04bbe6fb.png)
-  * 개선 전의 코드
+* 개선 전의 코드
+  ```cpp
+  #include <iostream>
+  #include <vector>
+  using namespace std;
+
+  int n, m, a, b, temp;
+  vector<int> arr(1001);
+
+  int find(int index){
+    if(arr[index] == index)	return index;
+    else	return find(arr[index]);
+  }
+
+  void union(int a, int b){
+    a = find(a);
+    b = find(b);
+    if(a != b) arr[a] = b;
+  }
+
+  int main(){
+    scanf("%d %d", &n, &m);
+    for(int i = 1; i <= n ; i++)
+      arr[i] = i;
+    for(int i = 1; i <= m; i++){
+      scanf("%d %d", &a, &b);
+      union(a, b);
+    }
+      
+    scanf("%d %d", a, b);
+    if(find(a) == find(b)) printf("YES");
+    else printf("NO");
+  }
+  ```
+* 개선 후의 프로그램 과정 (경로 압축)
+  ![개선 후의 프로그램 과정](https://user-images.githubusercontent.com/52440668/87877260-3c6ca380-ca18-11ea-9afc-a7baecc40719.png)
+  * 개선 후의 코드
     ```cpp
     #include <iostream>
     #include <vector>
     using namespace std;
-
     int n, m, a, b, temp;
     vector<int> arr(1001);
 
     int find(int index){
       if(arr[index] == index)	return index;
-      else	return find(arr[index]);
+      else return arr[index] = find(arr[index]);
     }
 
     void union(int a, int b){
@@ -52,7 +87,6 @@
       scanf("%d %d", &n, &m);
       for(int i = 1; i <= n ; i++)
         arr[i] = i;
-
       for(int i = 1; i <= m; i++){
         scanf("%d %d", &a, &b);
         union(a, b);
@@ -63,40 +97,3 @@
       else printf("NO");
     }
     ```
-    * 개선 후의 프로그램 과정 (경로 압축)
-      ![개선 후의 프로그램 과정](https://user-images.githubusercontent.com/52440668/87877260-3c6ca380-ca18-11ea-9afc-a7baecc40719.png)
-    * 개선 후의 코드
-      ```cpp
-      #include <iostream>
-      #include <vector>
-      using namespace std;
-
-      int n, m, a, b, temp;
-      vector<int> arr(1001);
-
-      int find(int index){
-        if(arr[index] == index)	return index;
-        else return arr[index] = find(arr[index]);
-      }
-
-      void union(int a, int b){
-        a = find(a);
-        b = find(b);
-        if(a != b) arr[a] = b;
-      }
-
-      int main(){
-        scanf("%d %d", &n, &m);
-        for(int i = 1; i <= n ; i++)
-          arr[i] = i;
-
-        for(int i = 1; i <= m; i++){
-          scanf("%d %d", &a, &b);
-          union(a, b);
-        }
-
-        scanf("%d %d", a, b);
-        if(find(a) == find(b)) printf("YES");
-        else printf("NO");
-      }
-      ```
