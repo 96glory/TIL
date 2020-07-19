@@ -21,6 +21,7 @@
 * [03. 요세푸스 문제](https://github.com/96glory/TIL/blob/master/Algorithm/03josephus-problem.md)
 * [04. DFS](https://github.com/96glory/TIL/blob/master/Algorithm/04dfs.md)
 * [05. BFS](https://github.com/96glory/TIL/blob/master/Algorithm/05bfs.md)
+* [06. Union-Find Algorithm with disjoint-set](https://github.com/96glory/TIL/blob/master/Algorithm/07union-find.md)
 
 ### Data Structure
 * [01. string in C++ STL](https://github.com/96glory/TIL/blob/master/DataStructure/01string.md)
