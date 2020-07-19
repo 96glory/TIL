@@ -17,17 +17,18 @@
 ## 분류
 ### Algorithm
 * [01. String과 char 배열, integer 사이의 변환](https://github.com/96glory/TIL/blob/master/Algorithm/01string-char-int-conversion.md)
-* [02. C++ STL string](https://github.com/96glory/TIL/blob/master/Algorithm/02string.md)
-* [03. 여러 정렬 방식](https://github.com/96glory/TIL/blob/master/Algorithm/03sort.md)
-* [04. 요세푸스 문제](https://github.com/96glory/TIL/blob/master/Algorithm/04josephus-problem.md)
-* [05. DFS](https://github.com/96glory/TIL/blob/master/Algorithm/05dfs.md)
-* [06. C++ STL vector](https://github.com/96glory/TIL/blob/master/Algorithm/06vector.md)
+* [02. 여러 정렬 방식](https://github.com/96glory/TIL/blob/master/Algorithm/02sort.md)
+* [03. 요세푸스 문제](https://github.com/96glory/TIL/blob/master/Algorithm/03josephus-problem.md)
+* [04. DFS](https://github.com/96glory/TIL/blob/master/Algorithm/04dfs.md)
+* [05. BFS](https://github.com/96glory/TIL/blob/master/Algorithm/05bfs.md)
 
 ### Data Structure
-* [01. stack](https://github.com/96glory/TIL/blob/master/DataStructure/01stack.md)
-* [02. 그래프 표현](https://github.com/96glory/TIL/blob/master/DataStructure/02graph-expression.md)
-* [03. queue](https://github.com/96glory/TIL/blob/master/DataStructure/03queue.md)
-* [04. priority queue](https://github.com/96glory/TIL/blob/master/DataStructure/04priority-queue.md)
+* [01. string in C++ STL](https://github.com/96glory/TIL/blob/master/DataStructure/01string.md)
+* [02. vector in C++ STL](https://github.com/96glory/TIL/blob/master/DataStructure/02vector.md)
+* [03. stack with C++ STL](https://github.com/96glory/TIL/blob/master/DataStructure/03stack.md)
+* [04. queue with C++ STL](https://github.com/96glory/TIL/blob/master/DataStructure/04queue.md)
+* [05. priority queue in C++ STL](https://github.com/96glory/TIL/blob/master/DataStructure/05priority-queue.md)
+* [06. 그래프를 표현하는 인접 행렬과 인접 리스트](https://github.com/96glory/TIL/blob/master/DataStructure/06graph-expression.md)
 
 ### Spring
 #### 백기선의 스프링 부트 개념과 활용
@@ -41,6 +42,7 @@
 * [07. spring-boot-starter-test](https://github.com/96glory/TIL/blob/master/Spring/whiteship-spring-boot/07spring-boot-starter-test.md)
 * [08. 스프링 부트가 제공하는 기능 in 스프링 웹 MVC](https://github.com/96glory/TIL/blob/master/Spring/whiteship-spring-boot/08spring-web-mvc.md)
 * [09. 스프링 부트가 제공하는 기능 in 스프링 데이터](https://github.com/96glory/TIL/blob/master/Spring/whiteship-spring-boot/09spring-data.md)
+* [10. 스프링 부트가 제공하는 기능 in 스프링 시큐리티](https://github.com/96glory/TIL/blob/master/Spring/whiteship-spring-boot/10spring-security.md)
 
 #### edwith의 web backend
 * [01. Spring](https://github.com/96glory/TIL/blob/master/Spring/edwith-web-back-end/web-app-reservation-service/01spring-core.md)
