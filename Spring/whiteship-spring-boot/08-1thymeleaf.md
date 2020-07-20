@@ -3,16 +3,15 @@
 
 ## Standard dialects?
 * Thymeleaf는 확장성이 매우 좋아서 template attribute의 집합을 정의 및 커스터마이징할 수 있다. 커스터마이징의 예로 개발자가 원하는 대로 attribute의 이름을 지을 수 있고, 원하는 syntax에서 원하는 expression을 평가하고 원하는 logic을 적용할 수 있다. Thymeleaf는 template engine framework에 가깝다.
-* Thymeleaf는 standard dialect와 함께 쓰인다. _Stadard_ and _SpringStandard_라고 불린다. html 문서 내에 다른 template의 문법이나 html tag와 함께 쓰여도, 접두사 th를 갖는 속성은 모두 Thymeleaf이기에, standard dialect를 통해 Thymeleaf가 tempalte에 사용되는 시기를 확인할 수 있다.
+* Thymeleaf는 standard dialect와 함께 쓰인다. _Stadard_ and _SpringStandard_ 라고 불린다. html 문서 내에 다른 template의 문법이나 html tag와 함께 쓰여도, 접두사 th를 갖는 속성은 모두 Thymeleaf이기에, standard dialect를 통해 Thymeleaf가 tempalte에 사용되는 시기를 확인할 수 있다.
   * 예시
     ```html
     <span th:text="...">
     ```
-* _Stadard_ and _SpringStandard_ dialect는 _SpringStandard_에서 MVC 애플리케이션의 통합 과정 중 특정 상황을 제외하곤 동일하게 다뤄진다.
+* _Stadard_ and _SpringStandard_ dialect는 _SpringStandard_ 에서 MVC 애플리케이션의 통합 과정 중 특정 상황을 제외하곤 동일하게 다뤄진다.
   * 특정 상황 : OGNL 대신 SpEL를 사용하는 애플리케이션일 경우
 
 <br>
-___
 
 ## Stadard Expression syntax
 * 대부분의 Thymeleaf attribute는 attribute 값을 expression으로 설정하거나 포함하는 것을 가능한데, 이에 사용되는 dialect를 Standard Expression이라고 칭한다.
@@ -23,7 +22,7 @@ ___
   * @{...} : [Link Expression](#link-expression)
   * ~{...} : [Fragment Expression](#fragment-expression)
   
-#### Variable Expression
+### Variable Expression
 * (model attribute라고도 불리는) 변수 표현식은 context variable에서 실행되는 OGNL 표현식, 또는 Thymeleaf 통합 과정 중 Spring EL이다.
   ```html
   ${session.user.name}
@@ -42,7 +41,7 @@ ___
   ```
   * ${books}는 context에 존재하는 변수 books을 선택한다. th:each를 사용하여 books 내에 존재하는 모든 값을 book에 담아 반복 가능하게 한다.
 
-#### Selection Expression
+### Selection Expression
 * 선택 표현식은 변수 표현식과 비슷하다. 선택 표현식은 전체 context 변수 맵에서 지정되는 것이 아니라, 이전에 선택한 object에서 지정된다는 것만 제외하면 변수 표현식과 같다.
   ```html
   *{customer.name}
@@ -66,8 +65,8 @@ ___
   }
   ```
 
-#### Message Expression
-* 메시지 표현식은 _text externalization_, _internationalization_, _i18n_라고 불리기도 한다.
+### Message Expression
+* 메시지 표현식은 _text externalization_, _internationalization_, _i18n_ 라고 불리기도 한다.
 * 메시지 표현식을 사용하면 \*.properties와 같은 외부 소스 파일에서 locale별 메시지를 검색하여 그들을 key로 참조하고, 매개 변수의 집합을 적용(optional)할 수 있다.
 * 스프링 애플리케이션에서 메시지 표현식은 스프링의 MessageSource 매커니즘과 자동으로 통합된다.
   ```html
@@ -90,8 +89,8 @@ ___
   #{${config.adminWelcomKey}(${session.user.name})}
   ```
   
-#### Link Expression
-* 링크 표현식이란 URL를 작성하고, URL에 유용한 context나 session 정보를 추가하기 위한 것이다. 이 과정을 _URL rewriting_이라고 한다.
+### Link Expression
+* 링크 표현식이란 URL를 작성하고, URL에 유용한 context나 session 정보를 추가하기 위한 것이다. 이 과정을 _URL rewriting_ 이라고 한다.
 * 웹 서버의 /myapp context에 배포된 웹 애플리케이션의 경우
     ```html
     <a th:href="@{/order/list}">...</a>
@@ -132,10 +131,10 @@ ___
     <a th:href="@{http://www.mycompany.com/main}">...</a>
     ```
   * absolute나 protocol-relative URL의 경우 Thymeleaf Link Expression에 어떤 값이 더해지는가? 또는 어떤 값을 더해지게 할 수 있는가?
-    * _response filter_가 _URL rewriting_의 여부를 판단한다.
-    * 서블릿 기반 웹 애플리케이션에서, Thymeleaf는 애플리케이션에서 출력되는 모든 URL(context-relative, relative, absolute, ...)에 대해 URL을 표시하기 전에 항상 HttpServletResponse.encodeUrl(...)를 호출한다. _response filter_는 HttpServletResponse 객체를 감싸기 때문에, 애플리케이션에서 커스터마이징된 _URL rewriting_을 할 수 있다.
+    * _response filter_ 가 _URL rewriting_ 의 여부를 판단한다.
+    * 서블릿 기반 웹 애플리케이션에서, Thymeleaf는 애플리케이션에서 출력되는 모든 URL(context-relative, relative, absolute, ...)에 대해 URL을 표시하기 전에 항상 HttpServletResponse.encodeUrl(...)를 호출한다. _response filter_ 는 HttpServletResponse 객체를 감싸기 때문에, 애플리케이션에서 커스터마이징된 _URL rewriting_ 을 할 수 있다.
 
-#### Fragement Expression
+### Fragment Expression
 * 단편 표현식은 markup의 단편을 나타내고, 그 단편들을 template로 옮겨주는 표현식이다. 표현식에 의해 단편들은 복제될 수 있고, argument로 다른 템플릿으로 전달될 수 있다.
 * 단편 삽입을 위해 가장 많이 쓰이는 것은 th:insert와 th:replace가 있다.
   ```html
@@ -148,7 +147,7 @@ ___
   </div>
   ```
 
-#### Literals and Opreations
+### Literals and Opreations
 * Literals (문자 그대로)
   * Text : 'one text', 'Another one!', ...
   * Number : 0, 34, 0.9, ...
@@ -169,17 +168,16 @@ ___
   * If-then-else : (if) ? (then) : (else)
   * Default : (value) ?: (defaultvalue)
 
-#### Expression Preprocessing
-* _Expression Preprocessing_를 하고 싶은 표현식을 &#95;&#95;와 &#95;&#95;로 감싼다.
+### Expression Preprocessing
+* _Expression Preprocessing_ 를 하고 싶은 표현식을 &#95;&#95;와 &#95;&#95;로 감싼다.
   ```html
   #{selection.__${sel.code}__}
   ```
 * 변수 표현식 ${sel.code}는 제일 먼저 실행되고, 그 결과는 나중에 실행될 실제 표현식의 일부로 사용된다.
-  * ${sel.code}를 _Expression Preprocessing_한 결과가 ALL이라고 가정하면, selection.ALL에 접근하여 메시지를 찾을 수 있다.
+  * ${sel.code}를 _Expression Preprocessing_ 한 결과가 ALL이라고 가정하면, selection.ALL에 접근하여 메시지를 찾을 수 있다.
 * 주로 internationalization에 쓰인다.
 
 <br>
-___
 
 ## Some Basic Attributes
 * th:text : tag의 body를 교체한다.
@@ -202,6 +200,5 @@ ___
   ```
   
 <br>
-___
 
 [더 많은 정보](https://www.thymeleaf.org/documentation.html)
