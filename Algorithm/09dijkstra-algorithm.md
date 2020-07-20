@@ -7,7 +7,7 @@
 * 조건
   * 모든 간선의 비용은 양수여야 한다.
 * 예시
-  * 그래프
+  * 그래프 <br>
     ![graph](https://user-images.githubusercontent.com/52440668/87952770-2c6ec580-cae5-11ea-94de-378e7854a725.png)
   * 프로그램 과정
     ![process](https://user-images.githubusercontent.com/52440668/87952703-195bf580-cae5-11ea-8cbc-ead6959ed787.png)
