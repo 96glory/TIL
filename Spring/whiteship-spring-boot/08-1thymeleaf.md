@@ -13,6 +13,7 @@
 
 <br>
 ___
+
 ## Stadard Expression syntax
 * 대부분의 Thymeleaf attribute는 attribute 값을 expression으로 설정하거나 포함하는 것을 가능한데, 이에 사용되는 dialect를 Standard Expression이라고 칭한다.
 * 다섯가지 종류
@@ -176,6 +177,7 @@ ___
 * 변수 표현식 ${sel.code}는 제일 먼저 실행되고, 그 결과는 나중에 실행될 실제 표현식의 일부로 사용된다.
   * ${sel.code}를 _Expression Preprocessing_한 결과가 ALL이라고 가정하면, selection.ALL에 접근하여 메시지를 찾을 수 있다.
 * 주로 internationalization에 쓰인다.
+
 <br>
 ___
 
@@ -198,6 +200,8 @@ ___
   ```html
   <a th:href="@{/admin/users}">
   ```
+  
 <br>
 ___
+
 [더 많은 정보](https://www.thymeleaf.org/documentation.html)
