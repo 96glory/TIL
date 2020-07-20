@@ -23,6 +23,7 @@
 * [05. BFS](https://github.com/96glory/TIL/blob/master/Algorithm/05bfs.md)
 * [06. Union-Find Algorithm with disjoint-set](https://github.com/96glory/TIL/blob/master/Algorithm/07union-find.md)
 * [07. 최소 신장 트리 알고리즘](https://github.com/96glory/TIL/blob/master/Algorithm/08mst-algorithm.md)
+* [08. 다익스트라 알고리즘](https://github.com/96glory/TIL/blob/master/Algorithm/09dijkstra-algorithm.md)
 
 ### Data Structure
 * [01. string in C++ STL](https://github.com/96glory/TIL/blob/master/DataStructure/01string.md)
