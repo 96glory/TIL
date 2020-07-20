@@ -45,6 +45,9 @@
 * [09. 스프링 부트가 제공하는 기능 in 스프링 데이터](https://github.com/96glory/TIL/blob/master/Spring/whiteship-spring-boot/09spring-data.md)
 * [10. 스프링 부트가 제공하는 기능 in 스프링 시큐리티](https://github.com/96glory/TIL/blob/master/Spring/whiteship-spring-boot/10spring-security.md)
 
+#### Thymeleaf
+* [01. Thymeleaf's Quick Documentation](https://github.com/96glory/TIL/blob/master/Spring/whiteship-spring-boot/08-1thymeleaf.md)
+
 #### edwith의 web backend
 * [01. Spring](https://github.com/96glory/TIL/blob/master/Spring/edwith-web-back-end/web-app-reservation-service/01spring-core.md)
 * [02. xml 파일을 이용한 설정](https://github.com/96glory/TIL/blob/master/Spring/edwith-web-back-end/web-app-reservation-service/02xml.md)
