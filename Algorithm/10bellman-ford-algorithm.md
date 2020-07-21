@@ -7,7 +7,7 @@
     * 음의 사이클을 돌면 돌수록 비용이 낮아지기 때문에 최단 경로를 구하는 의미가 없어짐.
     * 음의 사이클이 존재한다면, 간선의 갯수를 그래프 정점의 갯수 이상을 선택한 값이 그 경로의 최소 비용이라는 의미다.
 
-* 문제 예시
+* 문제 예시 <br>
 ![graph](https://user-images.githubusercontent.com/52440668/88006266-32e15980-cb46-11ea-8461-e55bd4f752f9.png)
 * 문제 과정
 ![process](https://user-images.githubusercontent.com/52440668/88006973-e008a180-cb47-11ea-9a78-0195b137dfc6.png)
