@@ -21,10 +21,11 @@
 * [03. 요세푸스 문제](https://github.com/96glory/TIL/blob/master/Algorithm/03josephus-problem.md)
 * [04. DFS](https://github.com/96glory/TIL/blob/master/Algorithm/04dfs.md)
 * [05. BFS](https://github.com/96glory/TIL/blob/master/Algorithm/05bfs.md)
-* [06. Union-Find Algorithm with disjoint-set](https://github.com/96glory/TIL/blob/master/Algorithm/07union-find.md)
-* [07. 최소 신장 트리 알고리즘](https://github.com/96glory/TIL/blob/master/Algorithm/08mst-algorithm.md)
-* [08. 다익스트라 알고리즘](https://github.com/96glory/TIL/blob/master/Algorithm/09dijkstra-algorithm.md)
-* [09. 벨만-포드 알고리즘](https://github.com/96glory/TIL/blob/master/Algorithm/10bellman-ford-algorithm.md)
+* [06. 조합 with DFS / C++ STL](https://github.com/96glory/TIL/blob/master/Algorithm/06combination.md)
+* [07. Union-Find Algorithm with disjoint-set](https://github.com/96glory/TIL/blob/master/Algorithm/07union-find.md)
+* [08. 최소 신장 트리 알고리즘](https://github.com/96glory/TIL/blob/master/Algorithm/08mst-algorithm.md)
+* [09. 다익스트라 알고리즘](https://github.com/96glory/TIL/blob/master/Algorithm/09dijkstra-algorithm.md)
+* [10. 벨만-포드 알고리즘](https://github.com/96glory/TIL/blob/master/Algorithm/10bellman-ford-algorithm.md)
 
 ### Data Structure
 * [01. string in C++ STL](https://github.com/96glory/TIL/blob/master/DataStructure/01string.md)
