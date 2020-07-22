@@ -60,3 +60,25 @@
   }
   ```
   
+## 우선순위 큐에 사용자 정의 함수 cmp를 적용하기
+> [인프런 90번 문제](https://github.com/96glory/Algorithm/blob/master/inflearn/90.cpp)
+```cpp
+struct State{
+ int x, y, dis;
+ State(int a, int b, int c){
+  x = a; y = b; dis = c;
+ }
+ bool operator < (const State & b) const {
+  if(dis == b.dis){
+   // prior 3
+   if(x = b.x) return y > b.y;
+   // prior 2
+   else return x > b.x;
+  }
+  // prior 1
+  else return dis > b.dis;
+ }
+};
+
+priority_queue<State> Q;
+```
