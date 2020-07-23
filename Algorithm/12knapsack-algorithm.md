@@ -19,8 +19,7 @@
     그 index부터 dp[index - 보석.weight] + 보석.value를 도출해낼 수 있다. (기존의 dp[index])와 (dp[index - 보석.weight] + 보석.value)를 비교하여 큰 값으로 dp[index]를 업데이트한다.
     단, 보석을 추가하려고 할 때 가방의 최대 무게를 고려하여야 한다.
 * 접근 과정
-<br>
-![그림1](https://user-images.githubusercontent.com/52440668/88272849-4e01c400-cd14-11ea-95b9-075a3e3d8d54.png)
+	![그림1](https://user-images.githubusercontent.com/52440668/88272849-4e01c400-cd14-11ea-95b9-075a3e3d8d54.png)
 
 * 코드
 ```cpp
