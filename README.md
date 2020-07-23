@@ -28,6 +28,7 @@
 * [10. 벨만-포드 알고리즘](https://github.com/96glory/TIL/blob/master/Algorithm/10bellman-ford-algorithm.md)
 * [11. 동적 프로그래밍](https://github.com/96glory/TIL/blob/master/Algorithm/11dynamic-programming.md)
 * [11-1. 최대 부분 증가 수열](https://github.com/96glory/TIL/blob/master/Algorithm/11-01lis.md)
+* [12. 냅색 알고리즘](https://github.com/96glory/TIL/blob/master/Algorithm/12knapsack-algorithm.md)
 
 ### Data Structure
 * [01. string in C++ STL](https://github.com/96glory/TIL/blob/master/DataStructure/01string.md)
