@@ -137,3 +137,33 @@ int main(){
 ```
 ![merge sort](https://user-images.githubusercontent.com/52440668/87512523-20809f00-c6b2-11ea-94f2-d244739b5c8f.png)
 > 큰 배열을 작은 배열로 divide, 하위 배열들을 합치면서 정렬.
+
+## C++ STL Algorithm의 sort함수 이용하기.
+* 라이브러리 추가하기
+```cpp
+#include <algorithm>
+```
+
+### 배열인 경우
+
+#### 오름차순
+```cpp
+int arr[10] = {5, 4, 3, 2, 1, 9, 8, 7, 6, 10};
+sort(arr, arr + 10);
+```
+
+#### 내림차순
+```cpp
+int arr[10] = {5, 4, 3, 2, 1, 9, 8, 7, 6, 10};
+sort(arr, arr + 10, greater<int>());
+```
+
+### vector인 경우
+#### 오름차순
+```cpp
+sort(v.begin(), v.end());
+```
+#### 내림차순
+```cpp
+sort(v.rbegin(), v.rend());
+```
