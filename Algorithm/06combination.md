@@ -55,3 +55,4 @@ int main (){
 	}while(next_permutation(ind.begin(), ind.end()));
 }
 ```
+ 
