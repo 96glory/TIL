@@ -15,7 +15,9 @@
 * reference를 명시하고, 원작자가 참고를 허용하는 자료만 사용한다.
 
 ## 분류
+
 ### Algorithm
+
 * [01. String과 char 배열, integer 사이의 변환](https://github.com/96glory/TIL/blob/master/Algorithm/01string-char-int-conversion.md)
 * [02. 여러 정렬 방식](https://github.com/96glory/TIL/blob/master/Algorithm/02sort.md)
 * [03. 요세푸스 문제](https://github.com/96glory/TIL/blob/master/Algorithm/03josephus-problem.md)
@@ -33,6 +35,7 @@
 * [14. 위상 정렬](https://github.com/96glory/TIL/blob/master/Algorithm/14topological-sort.md)
 
 ### Data Structure
+
 * [01. string in C++ STL](https://github.com/96glory/TIL/blob/master/DataStructure/01string.md)
 * [02. vector in C++ STL](https://github.com/96glory/TIL/blob/master/DataStructure/02vector.md)
 * [03. stack with C++ STL](https://github.com/96glory/TIL/blob/master/DataStructure/03stack.md)
@@ -42,7 +45,9 @@
 * [07. map in C++ STL](https://github.com/96glory/TIL/blob/master/DataStructure/07map.md)
 
 ### Spring
+
 #### 백기선의 스프링 부트 개념과 활용
+
 > [강의 링크](https://www.inflearn.com/course/%EC%8A%A4%ED%94%84%EB%A7%81%EB%B6%80%ED%8A%B8/)
 * [01. 스프링 부트의 의존성 관리](https://github.com/96glory/TIL/blob/master/Spring/whiteship-spring-boot/01dependency-management.md)
 * [02. 자동 설정](https://github.com/96glory/TIL/blob/master/Spring/whiteship-spring-boot/02auto-configuration.md)
@@ -57,14 +62,21 @@
 * [11. 스프링 부트 Actuator](https://github.com/96glory/TIL/blob/master/Spring/whiteship-spring-boot/11spring-boot-actuator.md)
 
 #### Thymeleaf
+
 * [01. Thymeleaf's Quick Documentation](https://github.com/96glory/TIL/blob/master/Spring/whiteship-spring-boot/08-1thymeleaf.md)
 
 #### edwith의 web backend
+
 * [01. Spring](https://github.com/96glory/TIL/blob/master/Spring/edwith-web-back-end/web-app-reservation-service/01spring-core.md)
 * [02. xml 파일을 이용한 설정](https://github.com/96glory/TIL/blob/master/Spring/edwith-web-back-end/web-app-reservation-service/02xml.md)
 * [03. Java Config과 @를 이용한 설정](https://github.com/96glory/TIL/blob/master/Spring/edwith-web-back-end/web-app-reservation-service/03JavaConfig.md)
 * [04. Spring Test](https://github.com/96glory/TIL/blob/master/Spring/edwith-web-back-end/web-app-reservation-service/04spring-test.md)
 * [05. Spring JDBC](https://github.com/96glory/TIL/blob/master/Spring/edwith-web-back-end/web-app-reservation-service/05spring-JDBC.md)
+
+### 우아한 테크 코스 TALK
+
+> [강의 링크](https://www.youtube.com/playlist?list=PLgXGHBqgT2TvpJ_p9L_yZKPifgdBOzdVH)
+
 
 ### C++
 * [01. 입출력 속도 향상 및 컴파일러 업그레이드](https://96glory.tistory.com/2)
