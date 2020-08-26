@@ -73,19 +73,24 @@
 1. `@Configuration` + `implements WebMvcConfigurer` (가장 많이 사용함)
     - `@Configuration`를 이용해 설정 파일로 지정하고 `WebMvcConfigurer`를 구현해 추가적으로 설정할 수 있다.
 2. `@Configuration` + `@EnableWebMvc` + `implements WebMvcConfigurer`
+
     - `@EnableWebMvc`를 사용하면 `WebMvcAutoConfiguration`이 사용되지 않으므로 스프링 부트의 기본 설정을 사용할 수 없다. 즉, 개발자가 A to Z 다시 개발해야함.
     - `ViewResolver` 커스터마이징
+
         ```java
         @Configuration
         @ComponentScan
         @EnableWebMvc
         public class WebConfig implements WebMvcConfigurer {
+
             @Override
             public void configureViewResolvers(ViewResolverRegistry registry) {
                 registry.jsp("/WEB_INF/", ".jsp");
             }
+
         }
         ```
+
 3. `application.properties`
     - `WebMvcAutoConfiguration`은 `ResourceProperties`, `WebMvcProperties` 등의 클래스에 따라 설정을 한다.
 
@@ -144,8 +149,8 @@
         ​@Test
         ​public​ ​void​ ​hello​() ​throws​ Exception {
             ​this​.mockMvc.perform(get(​"/hello/glory"​))
-            .andDo(print())
-            .andExpect(content().string(​"hello glory"​));
+                        .andDo(print())
+                        .andExpect(content().string(​"hello glory"​));
         }
     }
     ```
@@ -199,8 +204,8 @@
             ​@Test
             ​public​ ​void​ ​hello​() ​throws​ Exception {
                 ​this​.mockMvc.perform(get(​"/hello/glory"​))
-                .andDo(print())
-                .andExpect(content().string(​"hello glory"​));
+                            .andDo(print())
+                            .andExpect(content().string(​"hello glory"​));
             }
 
         }
@@ -376,8 +381,7 @@
         // 기본적으로 제공하는 String Converter
         @Test
         ​public​ ​void​ ​stringMessage​() ​throws​ Exception {
-            ​this​.mockMvc.perform(get(​"/message"​)
-                        .content(​"hello "​))
+            ​this​.mockMvc.perform(get(​"/message"​).content(​"hello "​))
                         .andDo(print())
                         .andExpect(status().isOk())
                         .andExpect(content().string(​"hello glory"​));
@@ -461,3 +465,259 @@
                 }
             }
             ```
+
+## 스프링 MVC 활용 : 요청 맵핑하기
+
+### HTTP Method (CRUD)
+
+#### GET (R)
+
+-   클라이언트가 서버의 리소스를 요청할 때 사용
+-   캐싱, 북마크 기능
+-   브라우저 기록에 남음. 민감 데이터에 사용하면 안됨.
+-   응답을 보낼 때 캐시와 관련된 헤더를 응답에 넣어서 보낼 수 있다.
+
+#### POST (U)
+
+-   클라이언트가 서버의 리소스를 수정하거나 새로 만들 때 사용
+    -   **POST의 URI는 보내는 데이터를 처리할 리소스를 지칭함.**
+    -   즉, POST 요청을 보낼 때마다 다른 결과값이 나온다.
+-   캐싱, 북마크 불가능
+-   브라우저 기록에 남지 않음
+
+#### PUT (C)
+
+-   URI에 해당하는 데이터를 새로 만들거나 수정할 때 사용한다.
+    -   **PUT의 URI는 보내는 데이터에 해당하는 리소스를 지칭함.**
+    -   즉, PUT 요청을 보낼 때마다 같은 결과값이 나온다. **(idempotent)**
+
+#### PATCH
+
+-   모든 기능은 PUT과 동일하나, 기존 entity와 보내려는 새 데이터의 차이나는 점만 전송함.
+
+#### DELETE (D)
+
+-   URI에 해당하는 리소스를 삭제할 때 사용
+
+#### 스프링 웹 MVC에서 제공하는 HTTP Method
+
+##### HEAD
+
+-   클라이언트는 응답 본문을 받지 않고 응답 헤더만 받아온다.
+-   나머지는 GET과 동일
+
+##### OPTIONS
+
+-   사용할 수 있는 HTTP Method를 제공한다.
+-   서버 또는 특정 리소스가 제공하는 HTTP Method를 확인
+-   보통 서버나 리소스에 핑을 보내 사용할 수 있는 지 확인하는 용도
+
+### 스프링 웹 MVC에서 HTTP Method 맵핑하기
+
+-   `@RequestMapping(method={RequestMethod.GET, RequestMethod.POST})`
+-   `@GetMapping`, `@PostMapping`, ...
+
+```java
+@Controller
+public​ ​class​ ​SampleController​ {
+
+    ​@GetMapping​(​"/hello"​)
+    ​@ResponseBody
+    ​// @ResponseBody : 요청 응답 본문에 return 값을 작성해줌.
+    ​public​ String ​hello​() {
+        ​return​ ​"hello"​;
+    }
+
+}
+```
+
+```java
+@RunWith​(SpringRunner.class)
+@WebMvcTest
+public​ ​class​ ​SampleControllerTest​ {
+
+    ​@Autowired
+    MockMvc mockMvc;
+
+    ​@Test
+    ​public​ ​void​ ​helloTest​() ​throws​ Exception {
+    mockMvc.perform(get(​"/hello"​))
+        .andDo(print())
+        .andExpect(status().isOk())
+        .andExpect(content().string(​"hello"​));
+    }
+
+}
+```
+
+### URI 패턴
+
+1. 배열로 여러 URI 패턴 한 번에 처리하기
+
+    ```java
+    @Controller
+    public​ ​class​ ​SampleController​ {
+
+        ​@GetMapping​({​"/hello"​, ​"/hi"​})
+        ​@ResponseBody
+        ​public​ String ​hello​() {
+        ​   return​ ​"hello"​;
+        }
+
+    }
+    ```
+
+2. 요청 식별자로 맵핑하기
+
+    - `?` : 한 글자
+    - `*` : 여러 글자
+    - `**` : 여러 패스
+
+3. 클래스에 선언한 `@RequestMapping`과 조합
+
+    - 한 클래스 내에 존재하는 모든 `@*Mapping`에 prefix를 넣고 싶을 때 사용
+
+    ```java
+    // "/hello/**" 처럼 사용됨
+    @Controller
+    @RequestMapping​(​"/hello"​)
+    public​ ​class​ ​SampleController​ {
+
+        ​@RequestMapping​(​"/**"​)
+        ​@ResponseBody
+        ​public​ String ​hello​() {
+            ​return​ ​"hello"​;
+        }
+
+    }
+    ```
+
+4. 정규식 표현으로 매핑
+
+    ```java
+    @Controller
+    @RequestMapping​(​"/hello"​)
+    public​ ​class​ ​SampleController​ {
+
+        ​@RequestMapping​(​"/{name:[a-z]+}"​)
+        ​@ResponseBody
+        ​public​ String ​hello​(@PathVariable String name) {
+        ​   return​ ​"hello "​ + name;
+        }
+
+    }
+    ```
+
+5. 패턴이 중복되는 경우 가장 구체적인 핸들러로 처리한다.
+
+    ```java
+    @Controller
+    @RequestMapping​(​"/hello"​)
+    public​ ​class​ ​SampleController​ {
+
+        ​/*
+            아래 ** 보다 /glory로 하는 것이 더 구체적이므로,
+            "/hello/glory"라는 URI 패턴이 들어오게 되면 ​helloGlory()로 처리하게 됨
+        */
+        ​@RequestMapping​(​"/glory"​)
+        ​@ResponseBody
+        ​public​ String ​helloGlory​() {
+            ​return​ ​"hello, specific "​ + name;
+        }
+
+        ​@RequestMapping​(​"/**"​)
+        ​@ResponseBody
+        ​public​ String ​hello​() {
+            ​return​ ​"hello "​ + name;
+        }
+
+    }
+    ```
+
+### 미디어 타입
+
+1. 특정 타입의 데이터를 담고 있는 요청만 처리하는 컨트롤러
+    - `consumes = MediaType.*`
+2. 특정 타입의 응답을 만드는 컨트롤러
+    - `produces = MediaType.*`
+
+```java
+@Controller
+public​ ​class​ ​SampleController​ {
+
+    ​@GetMapping​(
+        value = ​"/hello"​,
+        consumes = MediaType.APPLICATION_JSON_UTF8,
+        produces = MediaType.APPLICATION_JSON_UTF8
+    )
+    ​@ResponseBody
+    ​public​ String ​hello​() {
+        ​return​ ​"hello"​;
+    }
+
+}
+```
+
+```java
+@RunWith​(SpringRunner.class)
+@WebMvcTest
+public​ ​class​ ​SampleControllerTest​ {
+
+    ​@Autowired
+    MockMvc mockMvc;
+
+    ​@Test
+    ​public​ ​void​ ​helloTest​() ​throws​ Exception {
+    mockMvc.perform(get(​"/hello"​)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+            .andDo(print())
+            .andExpect(status().isOk())
+            .andExpect(content().string(​"hello"​));
+    }
+
+}
+```
+
+### Header Mapping
+
+1. 특정 헤더가 있는 요청을 처리하고 싶은 경우
+
+    - `@RequestMapping(header = "key")`
+    - 예시 : `header = HttpHeaders.FROM`
+
+2. 특정 헤더가 없는 요청을 처리하고 싶은 경우
+
+    - `@RequestMapping(header = "!key")`
+    - 예시 : `header = "!" + HttpHeaders.FROM`
+
+3. 특정 헤더 key/value가 있는 요청을 처리하고 싶은 경우
+
+    - `@RequestMapping(header = "key=value")`
+    - 예시 : `header = HttpHeaders.AUTHORIZATION + "=" + "111"`
+
+### Parameter Mapping
+
+-   여기서 언급되는 파라미터 : 요청 매개변수 / Query Parameter의 값을 의미한다.
+
+1. 특정 파라미터 키를 가지고 있는 요청을 처리하고 싶은 경우
+
+    - `@RequestMapping(params = "key")`
+    - 예시 : `params = "name"`
+
+2. 특정 파라미터가 없는 요청을 처리하고 싶은 경우
+
+    - `@RequestMapping(params = "!key")`
+    - 예시 : `params = "!name"`
+
+3. 특정 파라미터 key/value를 가지고 있는 요청을 처리하고 싶은 경우
+    - `@RequestMapping(header = "key")`
+    - 예시 : `params = "key1=value1"`
+
+## 스프링 MVC 활용 - 핸들러 메서드
+
+1. Handler Method Argument
+    - 주로 요청 그 자체 또는 요청에 들어있는 정보를 받아오는 데 사용
+    - `@PathVariable`, `@MatrixVariable`, `@RequestParam`, `@RequestHeader`
+2. Handler Method Return
+    - `@ResponseBody`, `@ModelAttribute`, `HttpEntity`, `ResponseEntity`, `String`, `View`, `Map`, `Model`, ...

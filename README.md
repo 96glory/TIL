@@ -77,6 +77,27 @@
         -   HandlerInterceptor
         -   ResourceHandler
         -   HTTP Message Converter
+    -   스프링 MVC 활용 : 요청 맵핑하기
+        -   HTTP Method
+            -   GET, POST, PUT, PATCH, DELETE, HEAD, OPTIONS
+        -   스프링 웹 MVC에서 HTTP Method 맵핑하기
+            -   배열로 여러 URI 패턴 한 번에 처리하기
+            -   요청 식별자로 맵핑하기
+            -   클래스에 선언한 `@RequestMapping`과 조합
+            -   정규식 표현으로 맵핑
+            -   패턴이 중복되는 경우 가장 구체적인 핸들러로 처리한다.
+        -   미디어 타입
+            -   특정 타입의 데이터를 담고 있는 요청만 처리하는 컨트롤러
+            -   특정 타입의 응답을 만드는 컨트롤러
+        -   Header Mapping
+            -   특정 헤더가 있는 요청을 처리하고 싶은 경우
+            -   특정 헤더가 없는 요청을 처리하고 싶은 경우
+            -   특정 헤더 key/value가 있는 요청을 처리하고 싶은 경우
+        -   Parameter Mapping
+            -   특정 파라미터 키를 가지고 있는 요청을 처리하고 싶은 경우
+            -   특정 파라미터가 없는 요청을 처리하고 싶은 경우
+            -   특정 파라미터 key/value를 가지고 있는 요청을 처리하고 싶은 경우
+    -   스프링 MVC 활용 : 핸들러 메서드
 
 #### Thymeleaf
 
