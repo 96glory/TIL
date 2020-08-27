@@ -721,3 +721,780 @@ public​ ​class​ ​SampleControllerTest​ {
     - `@PathVariable`, `@MatrixVariable`, `@RequestParam`, `@RequestHeader`
 2. Handler Method Return
     - `@ResponseBody`, `@ModelAttribute`, `HttpEntity`, `ResponseEntity`, `String`, `View`, `Map`, `Model`, ...
+
+### URI 패턴으로부터 값 가져오기
+
+#### @PathVariable
+
+-   요청 URI 패턴의 일부를 핸들러 메소드 아규먼트로 받는 방법
+-   타입 변환 지원 (string to int, ...)
+-   default값이 존재해야 한다.
+-   Optional 설정 가능
+    -   `@PathVariable(require = false)` : 없어도 됨
+    -   `@PathVariable(require = true)` : 반드시 있어야 함. 기본값.
+
+```java
+@Controller
+public​ ​class​ ​SampleController​ {
+
+    ​@GetMapping​(​"/events/{id}"​)
+    ​@ResponseBody
+    ​public​ Event ​getEvent​(@PathVariable Integer id) {
+        Event event = ​new​ Event();
+        event.setId(id);
+        ​return​ event;
+    }
+
+}
+```
+
+```java
+@RunWith​(SpringRunner.class)
+@WebMvcTest
+public​ ​class​ ​SampleContollerTest​ {
+
+    ​@Autowired
+    MockMvc mockMvc;
+
+    ​@Test
+    ​public​ ​void​ ​deleteEvents​() ​throws​ Exception {
+    mockMvc.perform(get(​"/events/1"​))
+            .andDo(print())
+            .andExpect(status().isOk())
+            .andExpect(jsonPath(​"id"​).value(​1​));
+    }
+}
+```
+
+#### @MatrixVariable
+
+-   요청 URI 패턴에서 key/value 쌍의 데이터를 아규먼트로 받는 방법
+    -   예시 : `/events/1;name=glory` 에서 `name=glory`를 가져올 수 있음
+-   타입 변환 지원
+-   기본값 필수
+-   Optional 지원
+    -   `@MatrixVariable(require = false)` : 없어도 됨
+    -   `@MatrixVariable(require = true)` : 반드시 있어야 함. 기본값.
+-   사용하기 위해서 Configuration 설정이 필요하다
+
+    ```java
+    @Configuration
+    public​ ​class​ ​WebConfig​ ​implements​ ​WebMvcConfigurer​ {
+
+        ​@Override
+        ​public​ ​void​ ​configurePathMatch​(PathMatchConfigurer configurer) {
+            UrlPathHelper urlPathHelper = ​new​ UrlPathHelper();
+            urlPathHelper.setRemoveSemicolonContent(​false​);
+            configurer.setUrlPathHelper(urlPathHelper);
+        }
+
+    }
+    ```
+
+```java
+@Controller
+public​ ​class​ ​SampleController​ {
+
+    ​@GetMapping​(​"/events/{id}"​)
+    ​@ResponseBody
+    ​public​ Event ​getEvent​(@PathVariable Integer id, @MatrixVariable String name) {
+        Event event = ​new​ Event();
+        event.setId(id);
+        ​return​ event;
+    }
+
+}
+```
+
+```java
+@RunWith​(SpringRunner.class)
+@WebMvcTest
+public​ ​class​ ​SampleContollerTest​ {
+
+    ​@Autowired
+    MockMvc mockMvc;
+
+    ​@Test
+    ​public​ ​void​ ​deleteEvents​() ​throws​ Exception {
+    mockMvc.perform(get(​"/events/1;name=glory"​))
+            .andDo(print())
+            .andExpect(status().isOk())
+            .andExpect(jsonPath(​"id"​).value(​1​));
+    }
+
+}
+```
+
+### 요청 매개변수 받아오기
+
+-   요청 매개변수
+    -   쿼리 파라미터
+        -   URI 패턴 뒤에 붙는 `?name=glory&gender=male`과 같은 경우
+    -   폼 데이터
+        -   클라이언트가 서버로 HTML 문서의 submit 버튼을 통해 폼에 있던 데이터를 전송받는 경우
+
+#### @RequestParam
+
+-   요청 매개변수에 들어있는 **단순 타입 데이터** 를 메소드 아규먼트로 받아올 수 있다.
+-   Optional 지원
+    -   `@RequestParam(require = false)` : 없어도 됨
+    -   `@RequestParam(require = false, defaultValue = "glory")` : 값이 없다면 기본값을 `glory`로 설정
+-   `Map<String, String>` 또는 `MultiValueMap<String, String>`으로 모든 요청 매개변수를 받아올 수 있다.
+
+```java
+@Controller
+public​ ​class​ ​SampleController​ {
+
+    ​@GetMapping​(​"/events"​)
+    ​@ResponseBody
+    ​public​ Event ​getEvent​(@RequestParam String name) {
+        Event event = ​new​ Event();
+        event.setName(name);
+        ​return​ event;
+    }
+
+}
+```
+
+```java
+@RunWith​(SpringRunner.class)
+@WebMvcTest
+public​ ​class​ ​SampleContollerTest​ {
+
+    ​@Autowired
+    MockMvc mockMvc;
+
+    ​@Test
+    ​public​ ​void​ ​deleteEvents​() ​throws​ Exception {
+    mockMvc.perform(get(​"/events"​)
+                .param(​"name"​, glory))
+            .andDo(print())
+            .andExpect(status().isOk())
+            .andExpect(jsonPath(​"name"​).value(​"glory"​));
+    }
+
+}
+```
+
+#### @ModelAttribute
+
+-   여러 곳에 있는 단순 타입 데이터를 복합 타입 객체로 받아올 때(Binding), 또는 해당 객체를 새로 만들 때 사용
+-   여러 곳에 있는 단순 타입 데이터를 URI 패턴, 요청 매개변수, 세션 등에서 가져올 수 있다.
+
+```java
+@Controller
+public​ ​class​ ​SampleController​ {
+
+    ​@GetMapping​(​"/events/form"​)
+    ​public​ String ​eventsForm​(Model model) {
+        Event newEvent = ​new​ Event();
+        newEvent.setLimit(​50​);
+
+        model.addAttribute(​"event"​, newEvent());
+        ​return​ ​"events/form"​;
+    }
+
+    ​@PostMapping​(​"/events"​)
+    ​@ResponseBody
+    ​public​ Event ​postEvent​(@ModelAttribute Event event) {
+        ​return​ event;
+    }
+
+}
+```
+
+```java
+@RunWith​(SpringRunner.class)
+@WebMvcTest
+public​ ​class​ ​SampleContollerTest​ {
+
+    ​@Autowired
+    MockMvc mockMvc;
+
+    ​@Test
+    ​public​ ​void​ ​eventForm​() ​throws​ Exception {
+        mockMvc.perform(get(​"/events/form"​))
+                .andDo(print())
+                .andExpect(view().name(​"/events/form"​))
+                .andExpect(model().attributeExists(​"events"​));
+    }
+
+    ​@Test
+    ​public​ ​void​ ​postEvent​() ​throws​ Exception {
+        mockMvc.perform(post(​"/events"​)
+                    .param(​"name"​, ​"glory"​)
+                    .param(​"limit"​, ​"20"​))
+                .andDo(print())
+                .andExpect(status().isOk)
+                .andExpect(jsonPath(​"name"​).value(​"glory"​));
+    }
+
+}
+```
+
+-   값을 바인딩할 수 없는 경우
+
+    -   예시 : int에 String 값을 넣으려고 하는 경우
+    -   400 Error (BindException) 발생
+    -   `bindingResult`를 출력해서 무슨 오류인지 확인하기
+
+        ```java
+        @Controller
+        public​ ​class​ ​SampleController​ {
+
+            ​@PostMapping​(​"/events"​)
+            ​@ResponseBody
+            ​public​ Event ​postEvent​(@ModelAttribute Event event, BindingResult bindResult) {
+                ​if​(bindingReuslt.hasError()) {
+                    System.out.println(​"===================="​);
+                    bindingResult.getAllErrors().forEach(c -> {
+                        System.out.println(c.toString());
+                    });
+                }
+                ​return​ event;
+            }
+
+        }
+        ```
+
+        ```java
+        @RunWith​(SpringRunner.class)
+        @WebMvcTest
+        class​ ​SampleControllerTest​ {
+
+            ​@Autowired
+            MockMvc mockMvc;
+
+            ​@Test
+            ​public​ ​void​ ​eventsTest​() ​throws​ Exception{
+            mockMvc.perform(post(​"/events?name=hahaha&id=notnum"​))
+                    .andDo(print())
+                    .andExpect(status().isOk())
+                    .andExpect(jsonPath(​"name"​).value(​"hahaha"​));
+            }
+
+            // 요청 매개변수에 id가 String으로 들어왔지만, bindingResult 덕에 테스트는 통과된다.
+        }
+        ```
+
+    -   JPA를 활용하여 값 검증 작업하기
+
+        -   `@Valid`로 `Event` 객체 내에 선언되어 있는 JPA 애노테이션을 검증한다.
+        -   JPA 애노테이션에 따라 `Event`를 받아올 수 없는 경우, 바인딩하지 않고 바인딩 오류가 발생되어 `bindingResult`에 저장된다.
+
+        ```java
+        @Controller
+        public​ ​class​ ​SampleController​ {
+
+            ​@PostMapping​(​"/events"​)
+            ​@ResponseBody
+            ​public​ Event ​postEvent​(@Valid @ModelAttribute Event event, BindingResult bindResult) {
+                ​if​(bindingReuslt.hasError()) {
+                    bindingResult.getAllErrors().forEach(c -> {
+                        System.out.println(c.toString());
+                    });
+                }
+                ​return​ event;
+            }
+
+        }
+        ```
+
+        ```java
+        public​ ​class​ ​Event​ {
+
+            Integer id;
+            ​
+            ​@NotBlank // name은 NULL이면 안된다.
+            String name;
+
+            ​@Min​(​0​) ​// limit은 0보다 크거나 같아야 한다.
+            Integer limit;
+
+            // getter, setter 생략
+        }
+        ```
+
+        -   `@Validated` : `@Valid`의 확장
+
+            -   JPA 애노테이션끼리 그룹을 만들 수 있고, 그 그룹에 해당하는 JPA 애노테이션만 검증 체크할 수 있다.
+
+            ```java
+            @Controller
+            public​ ​class​ ​SampleController​ {
+                ​@PostMapping​(​"/events"​)
+                ​@ResponseBody
+                ​public​ Event ​postEvent​(@Validated(Event.ValidateName.class) @ModelAttribute Event event, BindingResult bindResult) {
+                    ​if​(bindingReuslt.hasError()) {
+                        bindingResult.getAllErrors().forEach(c -> {
+                            System.out.println(c.toString());
+                        });
+                    }
+                    ​return​ event;
+                }
+            }
+            ```
+
+            ```java
+            public​ ​class​ ​Event​ {
+
+                ​interface​ ​ValidateLimit​ {}
+
+                ​interface​ ​ValidateName​ {}
+
+                Integer id;
+
+                ​@NoBlank​(groups = ValidateName.class)
+                String name;
+
+                ​@Min​(value = ​0​, groups = ValidateLimit.class)
+                Integer limit;
+
+            }
+            ```
+
+### @SessionAttributes
+
+-   모델 정보를 HTTP Session에 저장해주는 애노테이션
+-   애노테이션에 설정한 이름에 해당하는 모델 정보를 자동으로 세션에 넣어준다.
+-   여러 화면 또는 여러 요청으로부터 값을 받고 사용하는 객체를 사용할 때 사용한다.
+-   `SessionStatus`를 사용해서 세션 처리 완료를 알려줄 수 있다. 즉, 폼 처리가 끝나고 세션을 비울 때 사용한다.
+-   ![image](https://user-images.githubusercontent.com/52440668/91411059-c6fbba80-e882-11ea-825f-941865dadaa5.png)
+
+```java
+@Controller
+@SessionAttributes​(​"event"​)
+public​ ​class​ ​SampleController​ {
+
+    ​@GetMapping​(​"/events/form"​)
+    ​public​ String ​eventsForm​(Model model) {
+        Event newEvent = ​new​ Event();
+        newEvent.setLimit(​50​);
+        model.addAttribute(​"event"​, newEvent); ​// httpSession.setAttribute("event", newEvent);
+        ​return​ ​"/events/form"​;
+    }
+
+    ​@PostMapping​(​"/events"​)
+    ​@ResponseBody
+    ​public​ String ​createEvent​(@Validated @ModelAttribute Event event, BindingResult bindResult, SessionStatus sessionStatus) {
+        ​if​(bindingReuslt.hasError()) {
+        ​   return​ ​"/events/form"​;
+        }
+        sessionStatus.setComplete();
+        List<Event> eventList = ​new​ ArrayList<>();
+        eventList.add(event);
+        model.addAttribute(​"eventList"​, eventList); ​// model.addAttribute(eventList); 와 같은 코드
+        ​return​ ​"/events/list"​;
+    }
+
+}
+```
+
+```java
+@RunWith​(SpringRunner.class)
+@WebMvcTest
+public​ ​class​ ​SampleContollerTest​ {
+
+    ​@Autowired
+    MockMvc mockMvc;
+
+    ​@Test
+    ​public​ ​void​ ​eventForm​() ​throws​ Exception {
+        mockMvc.perform(get(​"/events/form"​))
+                .andDo(print())
+                .andExpect(view().name(​"/events/form"​))
+                .andExpect(model().attributeExists(​"event"​))
+                .andExpect(request().sessionAttribute(​"event"​, notNullValue()))
+                .andReturn().getRequest();
+
+        Object event = request().getSession().getAttribute(​"event"​);
+        System.out.println(event);
+    }
+
+}
+```
+
+-   멀티 폼 서브밋
+    1. `/events/form/name`에서 `name`을 입력받는다.
+    2. `/events/form/name`에서 세션에 등록된 `Event`를 `@ModelAttribute`를 통해 받는다.
+    3. `/events/form/limit`에서 redirect하여 `limit`을 입력받는다.
+    4. `limit`을 입력하여 submit하면 Event List Page로 이동한다.
+
+```java
+@Controller
+@SessionAttributes​(​"event"​)
+public​ ​class​ ​SampleController​ {
+
+    ​@GetMapping​(​"/events/form/name"​)
+    ​public​ String ​eventsForm​(Model model) {
+        Event newEvent = ​new​ Event();
+        newEvent.setLimit(​50​);
+        model.addAttribute(​"event"​, newEvent);
+        ​return​ ​"/events/form/name"​;
+    }
+
+    ​@PostMapping​(​"/events/form/name"​)
+    ​public​ String ​eventsFormNameSubmit​(@Validated @ModelAttribute Event event, BindingResult bindResult) {
+        ​if​(bindingReuslt.hasError()) {
+            ​return​ ​"/events/form-name"​;
+        }
+        ​return​ ​"redirect:/events/form/limit"​;
+    }
+
+    ​@GetMapping​(​"/events/form/limit"​)
+    ​public​ String ​eventFromLimit​(@ModelAttribute Event event, Model model) {
+        model.addAttribute(​"event"​, event);
+        ​return​ ​"/events/form/limit"​;
+    }
+
+    ​@PostMapping​(​"/events/form/limit"​)
+    ​public​ String ​eventsFormLimitSubmit​(@Validated @ModelAttribute Event event, BindingResult bindResult, SessionStatus sessionStatus) {
+        ​if​(bindingReuslt.hasError()) {
+        ​   return​ ​"/events/form-limit"​;
+        }
+        sessionStatus.setComplete();
+        ​return​ ​"redirect:/events/list"​;
+    }
+
+    ​@GetMapping​(​"events/list"​)
+    ​public​ String ​getEvents​(Model model) {
+        Event event = ​new​ Event();
+        event.setName(​"spring"​);
+        event.setLimit(​10​);
+
+        List<Event> eventList = ​new​ ArrayList<>();
+        eventList.add(event);
+        model.addAttribute(eventList);
+        ​return​ ​"/events/list"​;
+    }
+}
+```
+
+```html
+<!-- form-name.html -->
+<!DOCTYPE html>
+<​html​ lang=​"en"​ xmlns:th=​"http://www.thymeleaf.org"​>
+<​head​>
+    ​<​meta​ charset=​"UTF-8"​>
+    ​<​title​>​Create New Event​</​title​>
+</​head​>
+<​body​>
+    <​form​ action=​"#"​ th:action=​"@{/events/form/name}"​ method=​"post" th:object=​"${event}"​>
+        ​<​p​ th:if=​"${#fields.hasErrors('name')}" th:errors=​"*{name}"​>​Incorrect name​</​p​>
+        Name : ​<​input​ type=​"text"​ title=​"name"​ th:field=​"*{name}"​/>
+        ​<​input​ type=​"submit"​ value=​"Create"​/>
+    </​form​>
+</​body​>
+</​html​>
+```
+
+```html
+<!-- form-limit.html -->
+<!DOCTYPE html>
+<​html​ lang=​"en"​ xmlns:th=​"http://www.thymeleaf.org"​>
+<​head​>
+    ​<​meta​ charset=​"UTF-8"​>
+    ​<​title​>​Create New Event​</​title​>
+</​head​>
+<​body​>
+    <​form​ action=​"#"​ th:action=​"@{/events/form/limit}"​ method=​"post" th:object=​"${event}"​>
+        ​<​p​ th:if=​"${#fields.hasErrors('limit')}" th:errors=​"*{limit}"​>​Incorrect date​</​p​>
+        Limit : ​<​input​ type=​"text"​ title=​"limit"​ th:field=​"*{limit}"​/>
+        <​input​ type=​"submit"​ value=​"Create"​/>
+    </​form​>
+</​body​>
+</​html​>
+```
+
+```html
+<!-- list.html -->
+<!DOCTYPE html>
+<​html​ lang=​"en"​ xmlns:th=​"http://www.thymeleaf.org"​>
+<​head​>
+    ​<​meta​ charset=​"UTF-8"​>
+    ​<​title​>​Event list​</​title​>
+</​head​>
+<​body​>
+    <​a​ th:href=​"@{/events/form}"​>​Create New Event​</​a​>
+    <​div​ th:unless=​"${#lists.isEmpty(eventList)}"​>
+        ​<​ul​ th:each=​"event: ${eventList}"​>
+            ​<​p​ th:text=​"${event.Name}"​>​Event Name​</​p​>
+        ​</​ul​>
+    </​div​>
+</​body​>
+</​html​>
+```
+
+### @SessionAttribute
+
+-   세션에 있는 값을 참조하거나 읽어옴.
+-   `@SessionAttributes`는 해당 컨트롤러 안에서 다루는 특정 모델 객체를 세션에 넣고 공유할 때만 사용하지만, `@SessionAttribute`는 다른 컨트롤러의 세션 값이나 인터셉터, 필터 등에서 값을 가져올 수 있다.
+
+### RedirectAttributes
+
+-   redirect할 때 모델에 들어있는 primitive type data는 URI 쿼리 파라미터에 추가된다.
+-   스프링 부트에서는 기본적으로 비활성화되어 있으므로, `application.properties`에 `spring.mvc.ignore-default-model-on-redirect=false`를 추가한다.
+-   **원하는 값만 redirect하고 싶다면 Model 대신에 RedirectAttributes를 사용. 원하는 값을 명시적으로 추가할 수 있다.**
+    -   명시적으로 추가한 데이터를 받는 컨트롤러에서
+        -   `@RequestParam`을 이용해 **하나씩** 받아오기
+        -   `@ModelAttribute`를 이용해 **모두** 받아오기
+
+```java
+@Controller
+@SessionAttributes​(​"event"​)
+public​ ​class​ ​SampleController​ {
+
+    ​@GetMapping​(​"/events/form/name"​)
+    ​public​ String ​eventsForm​(Model model) {
+        Event newEvent = ​new​ Event();
+        newEvent.setLimit(​50​);
+        model.addAttribute(​"event"​, newEvent);
+        ​return​ ​"/events/form/name"​;
+    }
+
+    ​@PostMapping​(​"/events/form/name"​)
+    ​@ResponseBody
+    ​public​ String ​eventsFormNameSubmit​(@Validated @ModelAttribute Event event, BindingResult bindResult) {
+        ​if​(bindingReuslt.hasError()) {
+            ​return​ ​"/events/form-name"
+        }
+        ​return​ ​"redirect:/events/form/limit"​;
+    }
+
+    ​@GetMapping​(​"/events/form/limit"​)
+    ​public​ String ​eventFromLimit​(@ModelAttribute Event event, Model model) {
+        model.addAttribute(​"event"​, event);
+        ​return​ ​"/events/form/limit"​;
+    }
+
+    ​@PostMapping​(​"/events/form/limit"​)
+    ​@ResponseBody
+    ​public​ String ​eventsFormLimitSubmit​(@Validated @ModelAttribute Event event, BindingResult bindResult, SessionStatus sessionStatus, RedirectAttributes RedirectAttributes attributes) {
+        ​if​(bindingReuslt.hasError()) {
+            ​return​ ​"/events/form-limit"
+        }
+        sessionStatus.setComplete();
+
+        ​// RedirectAttributes에 Attribute 추가
+        attributes.addAttribute(​"name"​, event.getName());
+        attributes.addAttribute(​"limit"​, event.getLimit());
+        ​return​ ​"redirect:/events/list"​;
+    }
+
+    ​@GetMapping​(​"events/list"​)
+    ​public​ String ​getEvents​(Model model) {
+        Event event = ​new​ Event();
+        event.setName(​"spring"​);
+        event.setLimit(​10​);
+
+        List<Event> eventList = ​new​ ArrayList<>();
+        eventList.add(event);
+        model.addAttribute(eventList);
+        ​return​ ​"/events/list"​;
+    }
+}
+```
+
+### FlashAttributes
+
+-   `RedirectAttributes`를 통해 전달하는 데이터는 쿼리 파라미터로 전달되므로 전부 문자열로 변환 가능해야한다. 따라서 복합 객체를 넘기기에는 부적합하다.
+-   `FlashAttributes`는 redirect시 객체 넘기기가 가능하고, 요청이 지난 후 세션에서 자동으로 제거되는 일회성을 가지고 있다.
+-   `FlashAttributes`로 넘긴 데이터는 redirect된 곳에서 `@ModelAttributes`로 받을 수 있지만, `Model` 객체를 이용하여 데이터를 받을 수 있다.
+
+```java
+@Controller
+@SessionAttributes​(​"event"​)
+public​ ​class​ ​SampleController​ {
+
+    ​@GetMapping​(​"/events/form/name"​)
+    ​public​ String ​eventsForm​(Model model) {
+        Event newEvent = ​new​ Event();
+        newEvent.setLimit(​50​);
+        model.addAttribute(​"event"​, newEvent);
+        ​return​ ​"/events/form/name"​;
+    }
+
+    ​@PostMapping​(​"/events/form/name"​)
+    ​@ResponseBody
+    ​public​ String ​eventsFormNameSubmit​(@Validated @ModelAttribute Event event, BindingResult bindResult) {
+        ​if​(bindingReuslt.hasError()) {
+        ​   return​ ​"/events/form-name"
+        }
+        ​return​ ​"redirect:/events/form/limit"​;
+    }
+
+    ​@GetMapping​(​"/events/form/limit"​)
+    ​public​ String ​eventFromLimit​(@ModelAttribute Event event, Model model) {
+        model.addAttribute(​"event"​, event);
+        ​return​ ​"/events/form/limit"​;
+    }
+
+    ​@PostMapping​(​"/events/form/limit"​)
+    ​@ResponseBody
+    ​public​ String ​eventsFormLimitSubmit​(@Validated @ModelAttribute Event event, BindingResult bindResult, SessionStatus sessionStatus, RedirectAttributes attributes) {
+        ​if​(bindingReuslt.hasError()) {
+            ​return​ ​"/events/form-limit"
+        }
+        sessionStatus.setComplete();
+
+        ​// Flash Attributes를 이용한 Attribute 추가
+        attributes.addFlashAttributes(​"newEvent"​, event());
+        ​return​ ​"redirect:/events/list"​;
+    }
+
+    ​@GetMapping​(​"events/list"​)
+    ​public​ String ​getEvents​(Model model) {
+        Event event = ​new​ Event();
+        event.setName(​"spring"​);
+        event.setLimit(​10​);
+
+        ​// Model 객체를 이용하여 데이터 받기
+        Event newEvent = (Event) model.asMap().get(​"newEvent"​);
+        List<Event> eventList = ​new​ ArrayList<>();
+        eventList.add(event);
+        eventList.add(newEvent);
+        model.addAttribute(eventList);
+        ​return​ ​"/events/list"​;
+    }
+}
+```
+
+### @RequestBody
+
+-   요청 본문에 들어있는 데이터를 `HttpMessageConverter`를 통해 변환한 객체로 받아올 수 있다.
+    -   빈으로 등록된 `MessageConverter`들은 `HandlerAdapter`가 아규먼트를 resolving할 때 적절한 `Converter`를 선택해서 사용한다.
+-   `@Valid`나 `@Validated`를 사용해서 값 검증을 할 수 있다.
+
+```java
+@RestController
+@RequestMapping​(​"/api/events"​)
+public​ ​class​ ​EventApi​ {
+
+    ​@PostMapping
+    ​public​ Event ​createEvent​(@RequestBody @Valid Event event, BindingResult bindingResult) {
+        ​// save event
+        ​if​(bindingResult.hasErrors()) {
+            bindingResult.getAllErrors().forEach(error -> {
+                System.out.println(error);
+            });
+        }
+
+        ​return​ event;
+    }
+}
+```
+
+```java
+@RunWith​(SpringRunner.class)
+@SpringBootTest
+@AutoConfigureMockMvc
+public​ ​class​ ​EventApiTest​ {
+
+    ​@Autowired
+    ObjectMapper objectMapper;
+
+    ​@Autowired
+    MockMvc mockMvc;
+
+    ​@Test
+    ​public​ ​void​ ​createEvent​() ​throws​ Exception {
+        Event event = ​new​ Event();
+        event.setName(​"glory"​);
+        event.setLimit(​20​);
+        String json = objectMapper.writeValueAsString(event);
+
+        mockMvc.perform(post(​"/api/events"​)
+                    .contentType(MediaType.APPLICATION_JSON_UTF8)
+                    .content(json))
+                .andDo(print())
+                .andExpect(status().isOk)
+                .andExpect(jsonPath(​"name"​).value(​"glory"​))
+                .andExpect(jsonPath(​"limit"​).value(​20​));
+    }
+}
+```
+
+### @ModelAttribute의 다른 사용법
+
+-   기존 사용법
+    -   여러 곳에 있는 단순 타입 데이터를 복합 타입 객체로 받아오거나 해당 객체를 새로 만들 때 사용
+-   새로운 사용법
+    -   `@Controller`나 `@ControllerAdvice`를 사용한 클래스에서 모델 정보를 초기화할 때 사용
+    -   모든 핸들러에서 공통적으로 참조해야 하는 model 정보가 있는 경우 사용한다.
+
+```java
+// 첫 번째 방식
+@Controller
+public​ ​class​ ​EventController​ {
+
+    ​@ModelAttribute
+    ​public​ ​void​ ​categories​(Model model) {
+        model.addAttribute(​"categories"​, list.of(​"study"​, ​"seminar"​, "hobby"​, ​"social"​));
+    }
+}
+
+// 두 번째 방식
+@Controller
+public​ ​class​ ​EventController​ {
+
+    ​@ModelAttribute​(​"categories"​)
+    ​public​ List<String> ​categories​(Model model) {
+    ​   return​ list.of(​"study"​, ​"seminar"​, ​"hobby"​, ​"social"​);
+    }
+
+}
+```
+
+-   `@RequestMapping`과 같이 사용하면 해당 메서드를 리턴하는 객체를 모델에 넣어준다.
+
+    ```java
+    @Controller
+    public​ ​class​ ​EventController​ {
+
+        ​@ModelAttribute​(​"categories"​)
+        ​public​ List<String> ​categories​(Model model) {
+        ​   return​ list.of(​"study"​, ​"seminar"​, ​"hobby"​, ​"social"​);
+        }
+
+        ​@GetMapping​(​"/events/form/name"​)
+        ​@ModelAttribute​ ​// @ModelAttribute Annotation 생략 가능
+        ​public​ Event ​eventsFormName​() {
+        ​   return​ ​new​ Event();
+        }
+    }
+    ```
+
+### 데이터 바인더 @InitBinder
+
+-   특정 컨트롤러에서 바인딩 또는 검증 설정을 변경하고 싶을 때 사용
+-   그 컨트롤러에 대한 모든 요청 전에 `@InitBinder`가 부여된 메서드가 실행된다.
+-   바인딩 설정
+
+    ```java
+    @Controller
+    public​ ​class​ ​EventController​ {
+
+        ​@InitBinder
+        ​public​ ​void​ ​initEventBinder​(WebDataBinder webDataBinder) {
+            webDataBinder.setDisallowedFileds(​"id"​);
+            ​// 받고 싶지 않은 field 설정 (blacklist)
+            ​// 해당 field를 입력 받더라도 바인딩하지 않는다.
+
+            ​// webDataBinder.setAllowedFields (whitelist 방식)
+        }
+
+    }
+    ```
+
+-   Formatter 설정
+
+    ```java
+    public​ ​class​ ​Event​ {
+
+        ​@DateTimeFormat​(iso = DateTimeFormat.iso.DATE)
+        ​private​ LocalDate startDate;
+        ​// 이러한 변환이 이루어지는 이유는 해당 역할 할 수 있는 formatter 기본적으로 들어있기 때문이다.
+
+        // getter, setter 생략
+    }
+    ```
