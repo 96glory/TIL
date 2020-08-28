@@ -1,5 +1,6 @@
 # 정렬
 ## 1. 선택 정렬
+- ![selectionsort](https://hudi.kr/wp-content/uploads/2018/02/selectionsort.gif)
 ```C++
 #include <iostream>
 
@@ -36,6 +37,7 @@ int main(){
 ```
 
 ## 2. 버블 정렬
+- ![bubblesort](https://upload.wikimedia.org/wikipedia/commons/0/06/Bubble-sort.gif)
 ```C++
 #include <iostream>
 
@@ -66,6 +68,7 @@ int main(){
 ```
 
 ## 3. 삽입 정렬
+- ![insertionsort](https://upload.wikimedia.org/wikipedia/commons/0/0f/Insertion-sort-example-300px.gif)
 ```C++
 #include <iostream>
 
@@ -95,6 +98,8 @@ int main(){
 ```
 
 ## 4. 병합 정렬
+- ![mergesort](https://upload.wikimedia.org/wikipedia/commons/c/cc/Merge-sort-example-300px.gif)
+	- 큰 배열을 작은 배열로 divide, 하위 배열들을 합치면서 정렬.
 ```cpp
 #include <iostream>
 using namespace std;
@@ -135,8 +140,8 @@ int main(){
 	for(i = 1; i <= n; i++)	printf("%d ", data[i]);
 }
 ```
-![merge sort](https://user-images.githubusercontent.com/52440668/87512523-20809f00-c6b2-11ea-94f2-d244739b5c8f.png)
-> 큰 배열을 작은 배열로 divide, 하위 배열들을 합치면서 정렬.
+
+
 
 ## C++ STL Algorithm의 sort함수 이용하기.
 * 라이브러리 추가하기
