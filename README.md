@@ -136,6 +136,22 @@
 -   [05. JPA와 JDBC](https://github.com/96glory/TIL/blob/master/WoowaTechTalk/05jpa-jdbc.md)
 -   [06. Servlet & Spring](https://github.com/96glory/TIL/blob/master/WoowaTechTalk/06servlet-spring.md)
 
+### Git
+
+-   [한 곳에 정리하였음](https://github.com/96glory/TIL/01git.md)
+-   Git
+    -   Git의 세가지 목적
+        -   version, backup, collaborate
+    -   Git의 종류
+-   버전 관리
+    -   Windows에서 Git 설치
+    -   init : 새 저장소(repository) 만들기
+    -   commit : 버전(version) 만들기
+    -   diff : 버전 간의 차이점 비교
+    -   checkout : 특정 버전으로 working tree를 변경시키기
+    -   reset : 버전을 삭제하기
+    -   revert : 버전을 삭제하지 않으면서 되돌리는 방법
+
 ### C++
 
 -   [01. 입출력 속도 향상 및 컴파일러 업그레이드](https://96glory.tistory.com/2)
