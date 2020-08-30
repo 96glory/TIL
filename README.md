@@ -138,7 +138,7 @@
 
 ### Git
 
--   [한 곳에 정리하였음](https://github.com/96glory/TIL/01git.md)
+-   [한 곳에 정리하였음](https://github.com/96glory/TIL/blob/master/Git/01git.md)
 -   Git
     -   Git의 세가지 목적
         -   version, backup, collaborate
@@ -159,6 +159,23 @@
         -   같은 파일, 같은 부분을 병합하려고 할 때
     -   conflict를 처리하는 방법
     -   외부 도구를 이용하여 병합하는 방법
+-   Backup
+    -   remote : 지역 저장소와 원격 저장소와 연결하기
+    -   push : 지역 저장소의 버전을 원격 저장소로 업로드하기
+    -   clone : 원격 저장소를 복제해서 지역 저장소로 만들기
+    -   pull : 원격 저장소의 버전을 지역 저장소로 가져오기
+-   협업
+    -   혼자 작업하기
+    -   같이 작업하기 (github의 collaborator 기능)
+        -   다른 사용자끼리 push, pull
+    -   pull vs fetch
+    -   patch
+    -   Compare & Pull requests
+-   Cherry-pick & rebase
+    -   cherry-pick의 개념과 기본 사용법
+    -   Rebase의 개념과 기본 사용법
+    -   cherry-pick vs rebase
+    -   rebase vs merge
 
 ### C++
 

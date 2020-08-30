@@ -164,3 +164,132 @@
 
 -   p4Merge [다운로드 링크](https://www.perforce.com/downloads/visual-merge-tool)
 -   `git mergetool`
+
+## Backup
+
+-   원격 저장소(remote repository)의 탄생
+    -   여러 컴퓨터를 오가면서 각 컴퓨터(지역 저장소 : local repository)에서 `pull`하면 원격 저장소에서 데이터를 받아올 수 있고, 수정이 끝나면 원격 저장소에 `pull`할 수 있다. 코드를 백업할 수 있는 것이다.
+
+### remote : 지역 저장소와 원격 저장소와 연결하기
+
+-   `git remote -v`
+    -   내 지역 저장소가 어떤 원격 저장소로 연결되어 있는지 확인
+
+### push : 지역 저장소의 버전을 원격 저장소로 업로드하기
+
+-   새 지역 저장소와 연결/업로드
+    -   `echo "# my-repo" >> README.md`
+    -   `git init`
+    -   `git add README.md`
+    -   `git commit -m "first commit"`
+    -   `git remote add origin git주소`
+    -   `git push -u origin master`
+-   이미 존재하는 지역 저장소의 코드를 연결/업로드
+    -   `git remote add origin git주소`
+    -   `git push -u origin master`
+
+### clone : 원격 저장소를 복제해서 지역 저장소로 만들기
+
+-   `git clone git주소 [내가 원하는 directory 주소]`
+
+### pull : 원격 저장소의 버전을 지역 저장소로 가져오기
+
+-   `git pull`
+
+## 협업
+
+### 혼자 작업하기
+
+-   [push 설명 참고](#push-:-지역-저장소의-버전을-원격-저장소로-업로드하기)
+
+### 같이 작업하기 (github의 collaborator 기능)
+
+-   github의 협업하고자 하는 repository - settings - collaborators & teams - collaborators - 협업하고자 하는 github ID 작성 후 Add collaborator - 초대된 사람에게 이메일이 전송됨 - 초대된 사람이 링크를 클릭하게 되면 Collaborators로 인정됨.
+-   Collaborator의 권한
+    -   Admin : read, clone, push, add
+    -   Write : read, clone, push
+    -   Read : read, clone
+
+#### 다른 사용자끼리 push, pull
+
+-   ![제목1없음](https://user-images.githubusercontent.com/52440668/91651284-e6365a00-eac5-11ea-864f-fb9862799f94.png)
+-   교훈
+    -   반드시 작업 전에 pull하자.
+    -   pull 단위를 작게 하자.
+
+### pull vs fetch
+
+-   `git pull` -> `git commit` -> `git push`
+-   `git fetch` -> `git merge FETCH_HEAD` -> `git commit` -> `git push`
+-   **`git pull` = `git fetch` + `git merge FETCH_HEAD`**
+    -   `FETCH_HEAD` : 가장 최근에 fetch한 내용과 merge할 버전이 적혀있음.
+-   `git fetch`의 역할
+    -   원격 브랜치를 가져온다.
+
+### patch
+
+-   오픈 소스를 다룰 때 사용하는 명령어
+-   저장소 주인은 매번 오픈 소스에 대한 collaborator 기능을 사용하지 않고도 다른 사용자에게 권한을 줄 수 있다.
+-   다른 사용자가 오픈 소스에 대한 어떤 수정사항이 필요하다고 생각 될때, 저장소 주인에게 알린다.
+-   `git format-patch 다른_사용자의_입장에서_작성하기_전의_commit_ID`
+    -   patch 파일이 만들어짐
+    -   만들어진 patch 파일을 저장소 주인에게 보냄으로써 수정사항을 알려준다.
+-   `git am -3 -i *.patch`
+    -   `-3` : 3 way merge
+    -   `-i` : patch 파일마다 이 내용을 적용할 것인지 물어보게 하는 옵션
+    -   `*.patch` : 현재 디렉토리 내에 있는 모든 patch 파일에 대해서 merge 하겠다.
+
+### Compare & Pull requests
+
+-   내가 작업한 내용을 가져가 달라고 요청하는 것
+-   github의 fork : 다른 사람의 원격 저장소를 내 원격 저장소로 가져옴
+    -   fork한 사용자가 여러 commit과 push를 수행하고 나면, github의 repository에 Pull Request와 Compare 버튼이 활성화된다.
+        -   Compare : fork된 저장소(base repository)와 fork한 저장소(head repository)를 비교함
+        -   Pull Request : fork한 저장소의 달라진 점을 base repository 주인에게 알림.
+
+## Cherry-pick & rebase
+
+### cherry-pick의 개념과 기본 사용법
+
+-   ![123캡처](https://user-images.githubusercontent.com/52440668/91652288-be002880-ead0-11ea-9cd7-171d8f42cd99.JPG)
+-   branch topic의 commit인 **t2의 변화한 코드를** branch master에서 사용하고 싶을 때 cherry-pick을 사용한다!
+    1. 병합될 branch로 이동한다.
+        - `git checkout master`
+    2. ` git cherry-pick 3b8d035`
+        - `3b8d035`는 t2의 commit ID
+    3. 충돌이 발생하지 않았다면
+        - ![캡처3434](https://user-images.githubusercontent.com/52440668/91652398-066c1600-ead2-11ea-8440-8729fc0c8f15.JPG)
+        - 서로 다른 파일을 cherry-pick했으므로 충돌이 발생하지 않는다.
+    4. 충돌이 발생했다면
+        - ![캡rewr처](https://user-images.githubusercontent.com/52440668/91652779-5698a780-ead5-11ea-9ea1-da785d69dfb8.JPG)
+        - ![캡56565처](https://user-images.githubusercontent.com/52440668/91652794-6912e100-ead5-11ea-9d69-f95539b2b820.JPG)
+        - `git cherry-pick --continue`
+
+### Rebase의 개념과 기본 사용법
+
+-   ![456](https://user-images.githubusercontent.com/52440668/91652472-a3c74a00-ead2-11ea-8e33-50b7f255ec31.JPG)
+-   ![123](https://user-images.githubusercontent.com/52440668/91652470-a32eb380-ead2-11ea-92c8-5511b6abf02d.JPG)
+-   branch topic과 branch master의 base를 바꾸고 싶을 때 rebase를 사용한다!
+    -   기존 base는 `C`였지만 rebase를 통해 base가 `t2`로 바뀐 모습이다.
+    -   결과는 선형적 구조를 띈다.
+-   ![qwer](https://user-images.githubusercontent.com/52440668/91652539-5dbeb600-ead3-11ea-9907-e4ed8f5329e6.JPG)
+-   위 사진에서 base인 init을 t3로 변경하려고 한다.
+    1. 병합될 branch로 이동한다.
+        - `git checkout master`
+    2. 바꾸려는 commit인 t3의 branch로 rebase
+        - `git rebase topic`
+    3. 충돌이 발생하지 않았다면
+        - ![vb처](https://user-images.githubusercontent.com/52440668/91652586-c148e380-ead3-11ea-9d3d-5cc757d128f6.JPG)
+        - 서로 다른 파일을 rebase했으므로 충돌이 발생하지 않는다.
+    4. 충돌이 발생했다면
+        - ![11111](https://user-images.githubusercontent.com/52440668/91652916-8d22f200-ead6-11ea-9236-610361f9d2b2.JPG)
+        - ![22222](https://user-images.githubusercontent.com/52440668/91652927-a166ef00-ead6-11ea-83b6-960743419cbe.JPG)
+        - ![33333](https://user-images.githubusercontent.com/52440668/91652938-bb083680-ead6-11ea-8a57-9be3b0b3c1f1.JPG)
+
+### cherry-pick vs rebase
+
+-   ![ckdl](https://user-images.githubusercontent.com/52440668/91652636-1d136c80-ead4-11ea-9f74-e40b7c457988.JPG)
+
+### rebase vs merge
+
+-   ![123제목](https://user-images.githubusercontent.com/52440668/91653077-1686f400-ead8-11ea-869d-efea0deeb911.png)
