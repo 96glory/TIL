@@ -129,12 +129,16 @@
 
 > [강의 링크](https://www.youtube.com/playlist?list=PLgXGHBqgT2TvpJ_p9L_yZKPifgdBOzdVH)
 
--   [01. Spring vs Spring Boot](https://github.com/96glory/TIL/blob/master/WoowaTechTalk/01spring-vs-springboot.md)
--   [02. Web Server vs WAS](https://github.com/96glory/TIL/blob/master/WoowaTechTalk/02webserver-vs-was.md)
--   [03. API vs Library vs Framework](https://github.com/96glory/TIL/blob/master/WoowaTechTalk/03api-vs-library-vs-framework.md)
--   [04. DTO vs VO](https://github.com/96glory/TIL/blob/master/WoowaTechTalk/04dto-vs-vo.md)
--   [05. JPA와 JDBC](https://github.com/96glory/TIL/blob/master/WoowaTechTalk/05jpa-jdbc.md)
--   [06. Servlet & Spring](https://github.com/96glory/TIL/blob/master/WoowaTechTalk/06servlet-spring.md)
+-   [01. Spring vs Spring Boot](https://github.com/96glory/TIL/blob/master/YouTube/WoowaTechTalk/01spring-vs-springboot.md)
+-   [02. Web Server vs WAS](https://github.com/96glory/TIL/blob/master/YouTube/WoowaTechTalk/02webserver-vs-was.md)
+-   [03. API vs Library vs Framework](https://github.com/96glory/TIL/blob/master/YouTube/WoowaTechTalk/03api-vs-library-vs-framework.md)
+-   [04. DTO vs VO](https://github.com/96glory/TIL/blob/master/YouTube/WoowaTechTalk/04dto-vs-vo.md)
+-   [05. JPA와 JDBC](https://github.com/96glory/TIL/blob/master/YouTube/WoowaTechTalk/05jpa-jdbc.md)
+-   [06. Servlet & Spring](https://github.com/96glory/TIL/blob/master/YouTube/WoowaTechTalk/06servlet-spring.md)
+
+### 네이버 D2
+
+-   [01. REST API](https://github.com/96glory/TIL/blob/master/YouTube/NaverD2/01rest-api.md)
 
 ### Git
 
