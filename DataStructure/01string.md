@@ -54,4 +54,22 @@
     string s2 = s.substr(4);      // s2 = "EF"    ( index 4부터 끝까지의 문자열을 반환한다. )
     string s3 = s.substr(1,3);    // s3 = "BCD"   ( index 1부터 3까지의 문자열을 반환한다. )
     ```
-    
+
+## .strstr(char * a, char * b)
+- 문자열 a에 문자열 b가 포함되어 있는지, 즉 부분 문자열인지 확인한다.
+- 없다면 NULL을 리턴함
+    ```cpp
+    #include <bits/stdc++.h>
+    using namespace std;
+
+    char a[1000001], b[1000001];
+
+    int main(){
+        ios_base::sync_with_stdio(false);
+        cin.tie(NULL);  cout.tie(NULL);
+
+        cin >> a >> b;
+        if (strstr(a, b) == NULL)   cout << 0;
+        else                		cout << 1;
+    }
+    ```
