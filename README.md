@@ -135,6 +135,7 @@
 -   [04. DTO vs VO](https://github.com/96glory/TIL/blob/master/YouTube/WoowaTechTalk/04dto-vs-vo.md)
 -   [05. JPA와 JDBC](https://github.com/96glory/TIL/blob/master/YouTube/WoowaTechTalk/05jpa-jdbc.md)
 -   [06. Servlet & Spring](https://github.com/96glory/TIL/blob/master/YouTube/WoowaTechTalk/06servlet-spring.md)
+-   [07. AOP](https://github.com/96glory/TIL/blob/master/YouTube/WoowaTechTalk/07aop.md)
 
 ### 네이버 D2
 
