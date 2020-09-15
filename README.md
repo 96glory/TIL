@@ -46,6 +46,12 @@
 
 ### Spring
 
+#### NewLecture의 스프링 프레임워크
+
+> [강의 링크](https://www.youtube.com/playlist?list=PLq8wAnVUcTFUHYMzoV2RoFoY2HDTKru3T)
+
+-   [02. 느슨한 결합력과 인터페이스](https://github.com/96glory/TIL/blob/master/Spring/spring-framework/02interface.md)
+
 #### 백기선의 스프링 부트 개념과 활용
 
 > [강의 링크](https://www.inflearn.com/course/%EC%8A%A4%ED%94%84%EB%A7%81%EB%B6%80%ED%8A%B8/)
