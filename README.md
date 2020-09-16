@@ -51,6 +51,9 @@
 > [강의 링크](https://www.youtube.com/playlist?list=PLq8wAnVUcTFUHYMzoV2RoFoY2HDTKru3T)
 
 -   [02. 느슨한 결합력과 인터페이스](https://github.com/96glory/TIL/blob/master/Spring/spring-framework/02interface.md)
+-   [03. DI](https://github.com/96glory/TIL/blob/master/Spring/spring-framework/03dependency-injection.md)
+-   [04. IoC Container](https://github.com/96glory/TIL/blob/master/Spring/spring-framework/04ioc-container.md)
+-   [05. 스프링에서 DI와 IoC 컨테이너 다뤄보기](https://github.com/96glory/TIL/blob/master/Spring/spring-framework/05di-ioc-in-spring.md)
 
 #### 백기선의 스프링 부트 개념과 활용
 
@@ -142,6 +145,7 @@
 -   [05. JPA와 JDBC](https://github.com/96glory/TIL/blob/master/YouTube/WoowaTechTalk/05jpa-jdbc.md)
 -   [06. Servlet & Spring](https://github.com/96glory/TIL/blob/master/YouTube/WoowaTechTalk/06servlet-spring.md)
 -   [07. AOP](https://github.com/96glory/TIL/blob/master/YouTube/WoowaTechTalk/07aop.md)
+-   [08. Web Polling vs Web Push](https://github.com/96glory/TIL/blob/master/YouTube/WoowaTechTalk/08polling-vs-push.md)
 
 ### 네이버 D2
 
