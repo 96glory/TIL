@@ -43,6 +43,7 @@
 -   [05. priority queue in C++ STL](https://github.com/96glory/TIL/blob/master/DataStructure/05priority-queue.md)
 -   [06. 그래프를 표현하는 인접 행렬과 인접 리스트](https://github.com/96glory/TIL/blob/master/DataStructure/06graph-expression.md)
 -   [07. map in C++ STL](https://github.com/96glory/TIL/blob/master/DataStructure/07map.md)
+-   [08. 세그먼트 트리](https://github.com/96glory/TIL/blob/master/DataStructure/08segment-tree.md)
 
 ### Spring
 
