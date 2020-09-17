@@ -147,6 +147,7 @@
 -   [06. Servlet & Spring](https://github.com/96glory/TIL/blob/master/YouTube/WoowaTechTalk/06servlet-spring.md)
 -   [07. AOP](https://github.com/96glory/TIL/blob/master/YouTube/WoowaTechTalk/07aop.md)
 -   [08. Web Polling vs Web Push](https://github.com/96glory/TIL/blob/master/YouTube/WoowaTechTalk/08polling-vs-push.md)
+-   [09. Cache와 실제 사용 사례](https://github.com/96glory/TIL/blob/master/YouTube/WoowaTechTalk/09cache.md)
 
 ### 네이버 D2
 
