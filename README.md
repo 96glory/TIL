@@ -47,7 +47,7 @@
 
 ### Spring
 
-#### NewLecture의 스프링 프레임워크
+#### 스프링 프레임워크
 
 > [강의 링크](https://www.youtube.com/playlist?list=PLq8wAnVUcTFUHYMzoV2RoFoY2HDTKru3T)
 
@@ -56,7 +56,7 @@
 -   [04. IoC Container](https://github.com/96glory/TIL/blob/master/Spring/spring-framework/04ioc-container.md)
 -   [05. 스프링에서 DI와 IoC 컨테이너 다뤄보기](https://github.com/96glory/TIL/blob/master/Spring/spring-framework/05di-ioc-in-spring.md)
 
-#### 백기선의 스프링 부트 개념과 활용
+#### 스프링 부트 개념과 활용
 
 > [강의 링크](https://www.inflearn.com/course/%EC%8A%A4%ED%94%84%EB%A7%81%EB%B6%80%ED%8A%B8/)
 
@@ -72,7 +72,14 @@
 -   [10. 스프링 부트가 제공하는 기능 in 스프링 시큐리티](https://github.com/96glory/TIL/blob/master/Spring/whiteship-spring-boot/10spring-security.md)
 -   [11. 스프링 부트 Actuator](https://github.com/96glory/TIL/blob/master/Spring/whiteship-spring-boot/11spring-boot-actuator.md)
 
-#### 백기선의 스프링 Web MVC
+#### 스프링 JPA
+
+-   [01. JPA 시작 및 세팅하기, 기본 어노테이션](https://github.com/96glory/TIL/blob/master/Spring/spring-jpa/01jpa-tutorial.md)
+-   [02. JPA Value Type Mapping](https://github.com/96glory/TIL/blob/master/Spring/spring-jpa/02value-type-mapping.md)
+-   [03. JPA 관계 매핑](https://github.com/96glory/TIL/blob/master/Spring/spring-jpa/03relationship-mapping.md)
+-   [04. JPA Entity 상태](https://github.com/96glory/TIL/blob/master/Spring/spring-jpa/04jpa-entity-status.md)
+
+#### 스프링 Web MVC
 
 > [강의 링크](https://www.inflearn.com/course/%EC%9B%B9-mvc)
 
@@ -148,6 +155,7 @@
 -   [07. AOP](https://github.com/96glory/TIL/blob/master/YouTube/WoowaTechTalk/07aop.md)
 -   [08. Web Polling vs Web Push](https://github.com/96glory/TIL/blob/master/YouTube/WoowaTechTalk/08polling-vs-push.md)
 -   [09. Cache와 실제 사용 사례](https://github.com/96glory/TIL/blob/master/YouTube/WoowaTechTalk/09cache.md)
+-   [10. JVM의 Garbage Collector](https://github.com/96glory/TIL/blob/master/YouTube/WoowaTechTalk/09garbage-collector.md)
 
 ### 네이버 D2
 
