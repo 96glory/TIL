@@ -1,6 +1,6 @@
 # JPA 시작 및 세팅하기
 
-> [JPA 시작 및 세팅하기 출처](https://engkimbs.tistory.com/811?category=772527)
+> [JPA 시작 및 세팅하기 출처](https://engkimbs.tistory.com/811?category=772527),
 > [JPA Entity Mapping 출처](https://engkimbs.tistory.com/812?category=772527)
 
 - JPA (Java Persistent API)
@@ -159,7 +159,7 @@ public class JpaRunner implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) throws Exception {
         Account account = new Account();
-        account.setUsername("saelobi");
+        account.setUsername("glory");
         account.setPassword("jpa");
 
         entityManager.persist(account);

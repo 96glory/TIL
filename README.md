@@ -78,6 +78,10 @@
 -   [02. JPA Value Type Mapping](https://github.com/96glory/TIL/blob/master/Spring/spring-jpa/02value-type-mapping.md)
 -   [03. JPA 관계 매핑](https://github.com/96glory/TIL/blob/master/Spring/spring-jpa/03relationship-mapping.md)
 -   [04. JPA Entity 상태](https://github.com/96glory/TIL/blob/master/Spring/spring-jpa/04jpa-entity-status.md)
+-   [05. JPA Cascade](https://github.com/96glory/TIL/blob/master/Spring/spring-jpa/05cascade.md)
+-   [06. JPA Fetch](https://github.com/96glory/TIL/blob/master/Spring/spring-jpa/06fetch.md)
+-   [07. JPA Query](https://github.com/96glory/TIL/blob/master/Spring/spring-jpa/07query.md)
+-   [08. 스프링 데이터 Commn JpaRepository](https://github.com/96glory/TIL/blob/master/Spring/spring-jpa/08spring-data-jpa-repository.md)
 
 #### 스프링 Web MVC
 

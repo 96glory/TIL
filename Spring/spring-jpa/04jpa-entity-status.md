@@ -17,7 +17,7 @@
 ## JPA Entity 상태
 
 - ![image](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=http%3A%2F%2Fcfile21.uf.tistory.com%2Fimage%2F9975194B5C4DACBC134CF3)
-- Trasnsient : JPA가 엔티티를 나타내는 객체에 대한 정보를 모르는 상태
+- Transient : JPA가 엔티티를 나타내는 객체에 대한 정보를 모르는 상태
 - Persistent : JPA가 엔티티를 관리 중인 상태
     - 1차 캐시 : `PersistentContext`에 인스턴스를 넣은 것. 아직 저장되지 않은 상태에서 다시 인스턴스를 요청하면 DB에서 값을 가져오는 것이 아니라 **메모리에 캐시된 엔티티 정보를 받아옴.**
     - Dirty Checking : 엔티티의 변경사항을 지속적으로 추적함. 상태를 추적하여 데이터에 변화가 없을 경우에는 **어떠한 상태도 DB에 반영하지 않는다.**
