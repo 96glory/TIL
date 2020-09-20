@@ -1,8 +1,10 @@
-# 스프링 데이터 Common Repository
+# 스프링 데이터
 
-> [출처](https://engkimbs.tistory.com/822?category=772527)
+## 스프링 데이터 Repository
 
 ### `JpaRepository<Entity, ID-TYPE>`
+
+> [출처](https://engkimbs.tistory.com/822?category=772527)
 
 - 소스 코드
     ```java
@@ -40,12 +42,12 @@
     }
     ```
     - `@Rollback(false)`
-        - `@DataJpaTest`에서는 기본적으로 `@Transational`이 추가되어 있어 기본적으로 각 테스트들이 수행되었을 때 rollback를 하게 됩니다. 따라서 **하이버네이트는 rollback될 쿼리는 수행할 필요가 없는 쿼리라 인식하여 Repository에 엔티티를 저장하는 insert문을 날리지 않게 됩니다.** 따라서 원하는 테스트를 하기 위해서는 `@Roallback(false)`를 추가하여 rollback을 하지 않겠다는 정보를 부가해야합니다.
-    - 위 코드를 실행하게 되면 `Post`에 원래는 할당되지 않는 `id`에 값이 할당되어있지 않았습니다. (`assertThat(post.getId()).isNull();`가 통과됨)
+        - `@DataJpaTest`에서는 기본적으로 `@Transational`이 추가되어 있어 기본적으로 각 테스트들이 수행되었을 때 rollback를 하게 됩니다. **하이버네이트는 rollback될 쿼리는 수행할 필요가 없는 쿼리라 인식하여 Repository에 엔티티를 저장하는 insert문을 날리지 않게 됩니다.** 따라서 원하는 테스트를 하기 위해서는 `@Roallback(false)`를 추가하여 rollback을 하지 않겠다는 정보를 부가해야합니다.
+    - 위 코드 첫 세 줄 : `Post`에 원래는 할당되지 않는 `id`에 값이 할당되지 않았습니다. (`assertThat(post.getId()).isNull();`가 통과됨)
     - `postRepository.save(post)`를 실행하게 되면서 `@GeneratedValue`에 의해 멤버 변수 `id`에 값이 할당되게 됩니다.
     - 따라서 위 테스트는 통과됩니다.
 - 테스트 코드 : 페이징 기능 구현
-    - [`Pagable` 정보](https://gunju-ko.github.io/spring/2018/05/01/Spring-Data-JPA-Paging.html)
+    - [`Pagable` 정보 링크](https://gunju-ko.github.io/spring/2018/05/01/Spring-Data-JPA-Paging.html)
     ```java
     @RunWith(SpringRunner.class)
     @DataJpaTest
@@ -135,6 +137,249 @@
 
             long spring = postRepository.countByTitleContains("spring");
             assertThat(spring).isEqualTo(1);
+        }
+    }
+    ```
+
+### 새로운 Repository Interface 정의하기
+
+> [참조](https://engkimbs.tistory.com/823?category=772527)
+
+- 기본적으로 Spring JPA에서 제공하는 `JpaRepository`, `CrudRepository`를 용하지만, 만일 추가적인 기능을 개발하는 개발자에게 특정 메서드만 출시킨다거나 아니면 삭제 관련 메서드(`deleteAll`)를 감추고 싶을 경우 epository Interface를 직접 정의할 수 있습니다.
+
+#### @RepositoryDefinition
+
+- 소스 코드
+    ```java
+    @RepositoryDefinition(domainClass = Comment.class, idClass = Long.class)
+    public interface CommentRepository {
+
+        Comment save(Comment comment);
+
+        List<Comment> findAll();
+
+    }
+    ```
+    - `@RepositoryDefinition`은 `domainClass`와 `idClass`, 두 개의 파라미터를 정의해야 합니다.
+        - `domainClass` : 이 Repository가 인터페이스하는 엔티티/테이블
+        - `idClass` : 이 `domainCalss`를 식별할 때 사용하는 클래스의 타입
+    - `CrudRepository`나 `JpaRepository`에 정의되어 있는 인터페이스 메서드를 참조해 메서드를 정의할 수 있습니다. 이 메서드들을 통해 엔티티와 테이블 간 상호작용을 할 수 있게 됩니다.
+- 테스트 코드
+    ```java
+    @RunWith(SpringRunner.class)
+    @DataJpaTest
+    public class CommentRepositoryTest {
+
+        @Autowired
+        CommentRepository commentRepository;
+
+        @Test
+        public void crud() {
+            Comment comment = new Comment();
+            comment.setComment("Hello Comment");
+            commentRepository.save(comment);
+
+            List<Comment> all = commentRepository.findAll();
+            assertThat(all.size()).isEqualTo(1);
+        }
+
+    }
+    ```
+
+#### 기존 Repository 인터페이스를 상속받아 새로운 Repository 만들기
+
+- `Repository` 인터페이스를 상속받아 `MyRepository`를 정의한 예제
+    - 소스 코드
+        ```java
+        @NoRepositoryBean
+        public interface MyRepository<T, ID extends Serializable> extends Repository<T, ID> {
+
+            <E extends T> E save(E entity);
+
+            List<T> findAll();
+
+            long count();
+        }
+        ```
+        - `Repository`는 특별한 기능을 제공하는 인터페이스가 아닌 **마크 인터페이스** 입니다. `이 인터페이스가 Repository 용도로 사용될 것이다`를 알리는 용도로 쓰이죠. 
+        - `@NoRepositoryBean` 은 이 인터페이스가 Repository 용도로서 사용되는 것이 아닌 단지 **Repository의 메서드를 정의하는 인터페이스라는 정보를 부여합니다.**
+        - 위 예제와 마찬가지로 `save`, `findAll` 같은 메서드를 정의하면 이 메서드를 통하여 엔티티와 테이블 간에 상호작용이 일어나게 됩니다.
+        <br>
+        ```java
+        public interface CommentRepository extends MyRepository<Comment, Long>{
+
+            Comment save(Comment comment);
+
+            List<Comment> findAll();
+        }
+        ```
+        - `MyRepository` 인터페이스를 상속받아 제너릭으로 정의된 인수 부분을 구체적인 엔티티와 타입명으로 정의합니다.
+    - 테스트 코드
+        ```java
+        @RunWith(SpringRunner.class)
+        @DataJpaTest
+        public class CommentRepositoryTest {
+
+            @Autowired
+            CommentRepository commentRepository;
+
+            @Test
+            public void crud() {
+                Comment comment = new Comment();
+                comment.setComment("Hello Comment");
+                commentRepository.save(comment);
+
+                List<Comment> all = commentRepository.findAll();
+                assertThat(all.size()).isEqualTo(1);
+
+                long count = commentRepository.count();
+                assertThat(count).isEqualTo(1);
+            }
+        }
+        ```
+
+## 스프링 데이터 Null 체크
+
+> [출처](https://engkimbs.tistory.com/824?category=772527)
+
+- 소스 코드
+    ```java
+    @NoRepositoryBean
+    public interface MyRepository<T, ID extends Serializable> extends Repository<T, ID> {
+
+        <E extends T> E save(@NonNull E entity);
+
+        List<T> findAll();
+
+        long count();
+
+        @Nullable
+        <E extends T> Optional<E> findById(ID id);
+    }
+    ```
+    - `@NonNull` : 파라미터에 Null 값이 들어오는 것을 방지하는 어노테이션
+    - `@Nullable` : 이 메서드에서 Null 값을 허용될 수 있음을 보여주는 어노테이션. Repository 인터페이스에 리턴값을 `Optional`로 감싸서 후에 Null 값을 처리하게 할 수 있습니다.
+
+## 스프링 데이터 쿼리 만들기
+
+> [출처](https://engkimbs.tistory.com/825?category=772527)
+
+- Repository 인터페이스 내에서 **메서드 명으로 쿼리를 만드는 방법**
+    - `CREATE` : 메서드 이름을 분석해서 쿼리 만들기
+    - `USE_DECLARED_QUERY` : 미리 정의해 둔 쿼리를 찾아 사용하기
+    - `CREATE_IF_NOT_FOUND` : 미리 정의한 쿼리를 보고 없으면 만들기
+    - 메서드 명 규칙
+        ```
+        리턴타입 {접두어}{도입부}By{프로퍼티 표현식}(조건식)[(And|Or){프로퍼티 표현식}(조건식)]{정렬조건}(매개변수)
+        ```
+        - 접두어 : `find`, `get`, `query`, `count`, ...
+        - 도입부 : `Distinct`, `First(N)`, `Top(N)`
+        - 프로퍼티 표현식 : `Person`, `Address`, `ZipCode` → `find(Person)`,  `ByAddress_ZipCode(...)`
+        - 조건식 : `IgnoreCase`, `Between`, `LessThan`, `GreaterThan`, `Like`, `Contains`, ...
+        - 정렬 조건 : `OrderBy{프로퍼티}Asc|Desc`
+        - 리턴 타입 : `E`, `Optional<E>`, `List<E>`, `Page<E>`, `Slice<E>`, `Stream<E>`
+        - 매개 변수 : `Pageable`, `Sort`
+- `@Query`, `@NamedQuery`를 이용하여 쿼리를 미리 정의해두고 사용할 수 있습니다.
+    - 유념해야할 것은 **쿼리를 찾는 방식은 저장소마다 다릅니다.** 따라서 찾는 방식이 어떤 매커니즘으로 이루어지는지 알아야 제대로 된 쿼리가 적용될 것을 예측할 수 있습니다.
+
+- 소스 코드
+    ```java
+    @NoRepositoryBean
+    public interface MyRepository<T, ID extends Serializable> extends Repository<T, ID> {
+
+        <E extends T> E save(@NonNull E entity);
+
+        List<T> findAll();
+
+        long count();
+
+        @Nullable
+        <E extends T> Optional<E> findById(ID id);
+    }
+    ```
+    ```java
+    @Entity
+    @Getter
+    @Setter
+    public class Comment {
+
+        @Id
+        @GeneratedValue
+        private Long id;
+
+        private String comment;
+
+        @ManyToOne
+        private Post post;
+
+        private Integer likeCount = 0;
+
+    }
+    ```
+    ```java
+    public interface CommentRepository extends MyRepository<Comment, Long>{
+        
+        // Keyword 기준으로 대소문자 관계 없이 likeCount가 like 인자보다 많은 Comment 엔티티를 찾아라.
+        List<Comment> findByCommentContainsIgnoreCaseAndLikeCountGreaterThan(String keyword, int like);
+
+        // Keyword 기준으로 Pageable한 요청 객체를 받아 대소문자 관계 없이 Comment 엔티티를 찾아서 Page 형태로 엔티티를 반환하라.
+        Page<Comment> findByCommentContainsIgnoreCase(String keyword, Pageable pageable);
+
+    }
+    ```
+- 테스트 코드
+    ```java
+    @RunWith(SpringRunner.class)
+    @DataJpaTest
+    public class CommentRepositoryTest {
+
+        @Autowired
+        CommentRepository commentRepository;
+
+        @Test
+        public void crud() {
+            this.createComment(100, "spring data jpa");
+            this.createComment(50, "hibernate spring");
+
+            List<Comment> comments = commentRepository.findByCommentContainsIgnoreCaseOrderByLikeCountDesc("Spring");
+
+            assertThat(comments.size()).isEqualTo(2);
+            assertThat(comments).first().hasFieldOrPropertyWithValue("likeCount", 100);
+        }
+
+        private void createComment(int likeCount, String content) {
+            Comment comment = new Comment();
+            comment.setLikeCount(likeCount);
+            comment.setComment(content);
+            commentRepository.save(comment);
+        }
+
+    }
+    ```
+    ```java
+    @RunWith(SpringRunner.class)
+    @DataJpaTest
+    public class CommentRepositoryTest {
+
+        @Autowired
+        CommentRepository commentRepository;
+
+        @Test
+        public void crud() {
+            this.createComment(100, "spring data jpa");
+            this.createComment(50, "hibernate spring");
+
+            PageRequest pageRequest = PageRequest.of(0, 10, Sort.by(Sort.Direction.DESC, "LikeCount"));
+            Page<Comment> comments = commentRepository.findByCommentContainsIgnoreCase("spring", pageRequest);
+            assertThat(comments.getNumberOfElements()).isEqualTo(2);
+            assertThat(comments).first().hasFieldOrPropertyWithValue("likeCount", 100);
+        }
+
+        private void createComment(int likeCount, String content) {
+            Comment comment = new Comment();
+            comment.setLikeCount(likeCount);
+            comment.setComment(content);
+            commentRepository.save(comment);
         }
     }
     ```
