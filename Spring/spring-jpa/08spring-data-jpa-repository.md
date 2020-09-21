@@ -145,7 +145,7 @@
 
 > [참조](https://engkimbs.tistory.com/823?category=772527)
 
-- 기본적으로 Spring JPA에서 제공하는 `JpaRepository`, `CrudRepository`를 용하지만, 만일 추가적인 기능을 개발하는 개발자에게 특정 메서드만 출시킨다거나 아니면 삭제 관련 메서드(`deleteAll`)를 감추고 싶을 경우 epository Interface를 직접 정의할 수 있습니다.
+- 기본적으로 Spring JPA에서 제공하는 `JpaRepository`, `CrudRepository`를 용하지만, 만일 추가적인 기능을 개발하는 개발자에게 특정 메서드만 다룰 수 있게 한다거나, 삭제 관련 메서드(`deleteAll`)를 감추고 싶을 경우 Repository Interface를 직접 정의할 수 있습니다.
 
 #### @RepositoryDefinition
 
@@ -383,3 +383,247 @@
         }
     }
     ```
+
+## 스프링 데이터 커스텀 Repository
+
+> [출처](https://engkimbs.tistory.com/826?category=772527)
+
+### 새로운 Repository 만들기
+
+- 초기 setting
+    ```properties
+    spring.jpa.properties.hibernate.format_sql=true
+    logging.level.org.hibernate.type.descriptor.sql=trace
+    ```
+    ```java
+    // @Data : Lombok의 기능입니다. `Setter`, `Getter`, `ToString`, `Constructor`를 자동으로 생성해줍니다.
+    @Data
+    @Entity
+    public class Post {
+
+        @Id
+        @GeneratedValue
+        private Long id;
+
+        private String title;
+
+        // @Lob : varchar를 넘어서는 큰 내용을 넣고 싶은 경우
+        @Lob
+        private String content;
+
+        // @Temporal : 날짜 Type 매핑 (java.util.Date, java.util.Calendar)
+        // DATE - 날짜, TIME - 시간, TIMESTAMP - 날짜 & 시간
+        @Temporal(TemporalType.TIMESTAMP)
+        private Date created;
+
+    }
+    ```
+    ```java
+    public interface PostCustomRepository<T> {
+
+        List<Post> findMyPost();
+
+        void delete(T entity);
+    }
+    ```
+    - 사용자가 정의한 커스텀 Repository. 이 인터페이스를 `implements`한 접미사가 `Impl`인 클래스는 커스텀 인터페이스 클래스의 구현체가 자동적으로 할당되어 사용됩니다.
+    - 스프링 데이터에서 기본 기능으로서 제공하는 `delete` 메서드도 Custom Repository에서 구현하면 덮어쓰기가 가능해집니다.
+
+- `PostCustomRepository`를 구현한 `PostCustomRepositoyImpl`
+    ```java
+    @Repository
+    @Transactional
+    public class PostCustomRepositoryImpl implements PostCustomRepository {
+
+        @Autowired
+        EntityManager entityManager;
+
+        @Override
+        public List<Post> findMyPost() {
+            System.out.println("custom findMyPost");
+            return entityManager.createQuery("SELECT p FROM Post as p", Post.class)
+                    .getResultList();
+        }
+
+        @Override
+        public void delete(Object entity) {
+            System.out.println("custom delete");
+            entityManager.remove(entity);
+        }
+
+    }
+    ```
+
+    - `PostCustomRepository`를 구현한 클래스입니다. 위 코드에서 `EntityManager`는 엔티티를 저장하고 관리하는 역할을 합니다.
+    - `PostCustomRepository`를 구현한 메서드들은 `PostRepository`에 의존성이 주입될 때 사용할 수 있게 됩니다.
+
+- 기존 `PostRepository`에 커스텀 Repository 추가
+    ```java
+    public interface PostRepository extends JpaRepository<Post, Long>, PostCustomRepository<Post> {
+
+    }
+    ```
+    - `PostCustomRepository` 인터페이스를 확장한 `PostRepository`를 통하여 `PostCustomRepository`에서 정의한 메서드들을 사용할 수 있습니다.
+
+- 테스트 코드
+    ```java
+    @RunWith(SpringRunner.class)
+    @DataJpaTest
+    public class DemoApplicationTests {
+
+        @Autowired
+        PostRepository postRepository;
+
+        @Test
+        public void crud() {
+            postRepository.findMyPost();
+
+            Post post = new Post();
+            post.setTitle("hibernate");
+            postRepository.save(post);
+
+            postRepository.findMyPost();
+
+            postRepository.delete(post);
+            postRepository.flush();
+        }
+    }
+    ```
+
+### `JpaRepository` 커스터마이징
+
+- `JpaRepository`를 확장한 `MyRepository`
+    ```java
+    // @NoRepositoryBean : 이 인터페이스가 Repository로서 직접적으로 기능하지 않을 것이라는 것을 명시함.
+    @NoRepositoryBean
+    public interface MyRepository<T, ID extends Serializable> extends JpaRepository<T, ID> {
+
+        boolean contains(T entity);
+
+    }
+    ```
+- `MyRepository`의 구현체 `MyRepositoryImpl`
+    ```java
+    public class MyRepositoryImpl<T, ID extends Serializable>
+            extends SimpleJpaRepository<T, ID> implements MyRepository<T, ID>{
+
+        private EntityManager entityManager;
+
+        public MyRepositoryImpl(JpaEntityInformation<T, ?> entityInformation, EntityManager entityManager) {
+            super(entityInformation, entityManager);
+            this.entityManager = entityManager;
+        }
+
+        @Override
+        public boolean contains(T entity) {
+            return entityManager.contains(entity);
+        }
+    }
+    ```
+    - 위 Repository의 구현체는 `JpaRepository` 구현체 중 **Default 구현체인 `SimpleJpaRepository`를 상속받아 작성할 수 있습니다.** 이것을 통해 개발자에게 노출되는 Repository 인터페이스에서 `JpaRepository`를 따로 인터페이스를 확장하지 않고 아래와 같이 `MyRepository` 인터페이스만 확장하여 쓸 수 있습니다.
+    ```java
+    public interface PostRepository extends MyRepository<Post, Long> {
+
+    }
+    ```
+- 테스트 코드
+    ```java
+    @RunWith(SpringRunner.class)
+    @DataJpaTest
+    public class DemoApplicationTests {
+
+        @Autowired
+        PostRepository postRepository;
+
+        @Test
+        public void crud() {
+            Post post = new Post();
+            post.setTitle("hibernate");
+
+            assertThat(postRepository.contains(post)).isFalse();
+
+            postRepository.save(post);
+
+            assertThat(postRepository.contains(post)).isTrue();
+        }
+    }
+    ```
+
+## 스프링 데이터 도메인 이벤트
+
+> [출처](https://engkimbs.tistory.com/827?category=772527)
+
+- 스프링 프레임워크에서는 IoC 컨테이너에 접근하기 위한 `ApplicationContext` 인터페이스를 제공합니다. 
+- `ApplicationContext`는 `ApplicationEventPublisher`를 상속 받습니다. 따라서 사용자가 정의한 이벤트나 스프링 프레임워크에서 미리 정의한 이벤트를 publish하는 기능도 제공하고 있습니다.
+- 사용자가 정의한 이벤트를 수신하기 위해서는 `Listener`를 정의하여 해당 클래스에 맞는 이벤트를 받아 처리하면 됩니다.
+
+- 객체 `Post`
+    ```java
+    @Entity
+    @Data
+    public class Post {
+
+        @Id
+        @GeneratedValue
+        private Long id;
+
+        private String title;
+
+        @Lob
+        private String content;
+
+        @Temporal(TemporalType.TIMESTAMP)
+        private Date created;
+    }
+    ```
+- `ApplicationEvent`를 상속하여 Custom Event를 작성
+    ```java
+    public class PostPublishedEvent extends ApplicationEvent {
+
+        private final Post post;
+
+        public PostPublishedEvent(Object source) {
+            super(source);
+            this.post = (Post) source;
+        }
+
+        public Post getPost() {
+            return post;
+        }
+
+    }
+    ```
+    - `Post` 객체를 받는 생성자와 저장된 Post 객체의 Getter만을 작성.
+- `PostListener`
+    ```java
+    @Component
+    public class PostListener implements ApplicationListener<PostPublishedEvent> {
+
+        @Override
+        public void onApplicationEvent(PostPublishedEvent event) {
+            System.out.println("------------------------");
+            System.out.println(event.getPost().getTitle() + " is published");
+            System.out.println("------------------------");
+        }
+    }
+    ```
+    - `PostListener`는 `PostPublishedEvent`가 publish될 때 그 이벤트를 수신하여 출력하는 Event Listener
+- testing with `AppRunner`
+    ```java
+    @Component
+    public class AppRunner implements ApplicationRunner {
+
+        @Autowired
+        ApplicationContext applicationContext;
+
+        @Override
+        public void run(ApplicationArguments args) throws Exception {
+            Post post = new Post();
+            post.setTitle("POST EVENT");
+            PostPublishedEvent event = new PostPublishedEvent(post);
+
+            applicationContext.publishEvent(event);
+        }
+    }
+    ```
+    - `ApplicationContext`의 구현체는 이벤트를 publish할 수 있는 기능을 제공합니다. 따라서 `PostPublishedEvent`를 `ApplicationContext`를 통하여 publish하면 그 이벤트가 위에서 작성한 `PostListener`에게 수신되는 것을 알 수 있습니다.
