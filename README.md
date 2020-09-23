@@ -209,3 +209,7 @@
 ### C++
 
 -   [01. 입출력 속도 향상 및 컴파일러 업그레이드](https://96glory.tistory.com/2)
+
+### Python
+
+-   [01. 점프 투 파이썬 (파이썬 입문)](https://github.com/96glory/TIL/blob/master/Python/01jump-to-python.md)
