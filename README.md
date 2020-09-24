@@ -213,3 +213,7 @@
 ### Python
 
 -   [01. 점프 투 파이썬 (파이썬 입문)](https://github.com/96glory/TIL/blob/master/Python/01jump-to-python.md)
+
+### SQL - MySQL
+
+-   [01. 프로그래머스 SQL 고득점 KIT 답 모음](https://96glory.tistory.com/69)
