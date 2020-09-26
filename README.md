@@ -16,6 +16,22 @@
 
 ## 분류
 
++ [Algorithm](#algorithm)
++ [Data Structure](#data-structure)
++ [Spring](#spring)
+    - [스프링 프레임워크](#스프링-프레임워크)
+    - [스프링 부트 개념과 활용](#스프링-부트-개념과-활용)
+    - [스프링 JPA](#스프링-jpa)
+    - [스프링 Web MVC](#스프링-web-mvc)
+    - [Thymeleaf](#thymeleaf)
+    - [edwith의 web backend](#edwith의-web-backend)
++ [우아한 테크 코스 TALK](#우아한-테크-코스-talk)
++ [네이버 D2](#네이버-d2)
++ [Git](#git)
++ [C++](#c)
++ [Python](#python)
++ [SQL - MySQL](#sql-mysql)
+
 ### Algorithm
 
 -   [01. String과 char 배열, integer 사이의 변환](https://github.com/96glory/TIL/blob/master/Algorithm/01string-char-int-conversion.md)
@@ -213,6 +229,7 @@
 ### Python
 
 -   [01. 점프 투 파이썬 (파이썬 입문)](https://github.com/96glory/TIL/blob/master/Python/01jump-to-python.md)
+-   [02. Python으로 REST API로부터 JSON 받아오기 및 JSON 다루기](https://github.com/96glory/TIL/blob/master/Python/02rest-api-and-json-parser.md)
 
 ### SQL - MySQL
 
