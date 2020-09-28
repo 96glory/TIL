@@ -70,7 +70,8 @@
 -   [02. 느슨한 결합력과 인터페이스](https://github.com/96glory/TIL/blob/master/Spring/spring-framework/02interface.md)
 -   [03. DI](https://github.com/96glory/TIL/blob/master/Spring/spring-framework/03dependency-injection.md)
 -   [04. IoC Container](https://github.com/96glory/TIL/blob/master/Spring/spring-framework/04ioc-container.md)
--   [05. 스프링에서 DI와 IoC 컨테이너 다뤄보기](https://github.com/96glory/TIL/blob/master/Spring/spring-framework/05di-ioc-in-spring.md)
+-   [05. 의존성을 직접 주입하기](https://github.com/96glory/TIL/blob/master/Spring/spring-framework/05di-directly.md)
+-   [06. XML 기반의 DI 지시서 작성하기](https://github.com/96glory/TIL/blob/master/Spring/spring-framework/06di-with-xml.md)
 
 #### 스프링 부트 개념과 활용
 
