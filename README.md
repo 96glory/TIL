@@ -72,6 +72,7 @@
 -   [04. IoC Container](https://github.com/96glory/TIL/blob/master/Spring/spring-framework/04ioc-container.md)
 -   [05. 의존성을 직접 주입하기](https://github.com/96glory/TIL/blob/master/Spring/spring-framework/05di-directly.md)
 -   [06. XML 기반의 DI 지시서 작성하기](https://github.com/96glory/TIL/blob/master/Spring/spring-framework/06di-with-xml.md)
+-   [07. 어노테이션 기반의 DI](https://github.com/96glory/TIL/blob/master/Spring/spring-framework/07di-with-annotation.md)
 
 #### 스프링 부트 개념과 활용
 
