@@ -89,3 +89,102 @@
             int result = examProxy.total();
             System.out.println("total is " + result);
         }
+
+### 순수 자바로 AOP 구현해보기 
+
+> [강의 링크](https://bit.ly/34oAgok)
+
+```java
+package spring.aop;
+
+public class Program {
+
+    public static void main(String[] args){
+        
+        Exam exam = new NewlecExam(1, 1, 1, 1);
+
+        Exam proxy = (Exam) Proxy.newProxyInstance(
+            NewlecExam.class.getClassLoader(), 
+            new Class[] {Exam.class},
+            new InvocationHandler() {
+
+                @Override
+                public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+                    long start = System.currentTimeMillis();
+
+                    Object result = method.invoke(exam, args);
+                    
+                    long end = System.currentTimeMillis();
+
+                    String message = (end - start) + "ms 시간이 걸렸습니다.";
+                    System.out.println(messsage);
+
+                    return result;
+                }
+
+            }
+        );
+
+        System.out.printf("total is %d", exam.total());
+        System.out.printf("avg is %f", exam.avg());
+
+    }
+
+}
+
+```
+
+```java
+package spring.aop.entity;
+
+public interface Exam{
+    int total();
+    float avg();
+}
+```
+
+```java
+package spring.aop.entity;
+
+public class NewlecExam implements Exam {
+
+    private int kor;
+    private int eng;
+    private int math;
+    private int com;
+
+    public NewlecExam() {
+
+    }
+
+    public NewlecExam(int kor, int eng, int math, int com){
+        this.kor = kor;
+        this.eng = eng;
+        this.math = math;
+        this.com = com;
+    }
+
+    @Override
+    public int total() {
+        int result =  kor + eng + math + com;
+
+        try{
+              Thread.sleep(200);
+        } catch (InterruptedException e) {
+              e.printStackTrace();
+        }
+
+        return result;
+    }
+
+    @Override
+    public float avg() {
+
+        float result = total() / 4.0f
+
+        return result;
+    }
+
+    // getter, setter 생략
+}
+```
