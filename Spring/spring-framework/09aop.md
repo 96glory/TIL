@@ -169,9 +169,9 @@ public class NewlecExam implements Exam {
         int result =  kor + eng + math + com;
 
         try{
-              Thread.sleep(200);
+            Thread.sleep(200);
         } catch (InterruptedException e) {
-              e.printStackTrace();
+            e.printStackTrace();
         }
 
         return result;
@@ -186,5 +186,82 @@ public class NewlecExam implements Exam {
     }
 
     // getter, setter 생략
+}
+```
+
+### 스프링 AOP : AroundAdvice 구현하기
+
+> [강의 링크](https://bit.ly/33yVqkk)
+
+- Advice
+    - Before : 앞에만 필요한 곁다리 업무
+    - After returnning : 뒤에만 필요한 곁다리 업무
+    - After throwing : 본 업무를 처리하는 곁다리 업무
+    - Around : 앞뒤로 필요한 곁다리 업무
+- 스프링 AOP를 사용하기 위해서 프로젝트에 스프링 설정을 해준다.
+
+#### XML Config로 구현
+
+```xml
+<!-- setting.xml -->
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:util="http://www.springframe.org/schema/util"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="target" class="spring.aop.entity.NewlecExam" p:kor="1" p:eng="1" p:math="1" p:com="1"/>
+    <bean id="logAroundAdvice" class="spring.aop.advice.LogAroundAdvice" />
+    <bean id="proxy" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="target" ref="target" />
+        <property name="interceptorNames">
+            <list>
+                <value>logAroundAdvice</value>
+            </list>
+        </property>
+    </bean>
+</beans>
+```
+
+```java
+package spring.aop.advice;
+
+import org.aopalliance.intercept.MethodInterceptor;
+
+public class LogAroundAdvice implements MethodInterceptor {
+
+    @Override
+    public Object invoke(MethodInvocation invocation) throws Throwable {
+        long start = System.currentTimeMillis();
+
+        Object result = invocation.proceed();
+
+        long end = System.currentTimeMillis();
+        String message = (end - start) + "ms 시간이 걸렸습니다.";
+        System.out.println(messsage);
+
+        return result;
+    }
+
+}
+```
+
+```java
+package spring.aop;
+
+public class Program {
+
+    public static void main(String[] args){
+        ApplicationContext context = new ClassPathXmlApplicationContext("spring/aop/setting.xml");
+        // new AnnotationConfigApplicationContext(NewlecDIConfig.class);
+        
+        Exam proxy = (Exam) context.getBean("proxy");
+
+        System.out.printf("total is %d", proxy.total());
+        System.out.printf("avg is %f", proxy.avg());
+    }
+
 }
 ```
