@@ -189,9 +189,7 @@ public class NewlecExam implements Exam {
 }
 ```
 
-### 스프링 AOP : AroundAdvice 구현하기
-
-> [강의 링크](https://bit.ly/33yVqkk)
+## 스프링 AOP
 
 - Advice
     - Before : 앞에만 필요한 곁다리 업무
@@ -200,7 +198,9 @@ public class NewlecExam implements Exam {
     - Around : 앞뒤로 필요한 곁다리 업무
 - 스프링 AOP를 사용하기 위해서 프로젝트에 스프링 설정을 해준다.
 
-#### XML Config로 구현
+### AroundAdvice 구현하기
+
+> [강의 링크](https://bit.ly/33yVqkk)
 
 ```xml
 <!-- setting.xml -->
@@ -264,4 +264,247 @@ public class Program {
     }
 
 }
+```
+
+### BeforeAdvice 구현하기
+
+> [강의 링크](https://bit.ly/34CN2Qi)
+
+```xml
+<!-- setting.xml -->
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:util="http://www.springframe.org/schema/util"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="target" class="spring.aop.entity.NewlecExam" p:kor="1" p:eng="1" p:math="1" p:com="1"/>
+    <bean id="logAroundAdvice" class="spring.aop.advice.LogAroundAdvice" />
+    <bean id="logBeforeAdvice" class="spring.aop.advice.LogBeforeAdvice" />
+
+    <bean id="proxy" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="target" ref="target" />
+        <property name="interceptorNames">
+            <list>
+                <value>logAroundAdvice</value>
+                <value>logBeforeAdvice</value>
+            </list>
+        </property>
+    </bean>
+</beans>
+```
+
+```java
+package spring.aop.advice;
+
+public class LogBeforeAdvice implements MethodBeforeAdvice {
+
+    @Override
+    public Object before(Method method, Object[] args, Object target) throws Throwable {
+        System.out.println("앞에서 실행될 로직");
+    }
+
+}
+```
+
+### After Returning & Throwing Advice
+
+> [강의 링크](https://bit.ly/3iEgvOq)
+
+```xml
+<!-- setting.xml -->
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:util="http://www.springframe.org/schema/util"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!-- 일부러 오류 발생 -->
+    <bean id="target" class="spring.aop.entity.NewlecExam" p:kor="101" p:eng="1" p:math="1" p:com="1"/>
+
+    <bean id="logAroundAdvice" class="spring.aop.advice.LogAroundAdvice" />
+    <bean id="logBeforeAdvice" class="spring.aop.advice.LogBeforeAdvice" />
+    <bean id="logAfterReturningAdvice" class="spring.aop.advice.LogAfterReturningAdvice" />
+    <bean id="logAfterThrowingAdvice" class="spring.aop.advice.LogAfterThrowingAdvice" />
+
+    <bean id="proxy" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="target" ref="target" />
+        <property name="interceptorNames">
+            <list>
+                <value>logAroundAdvice</value>
+                <value>logBeforeAdvice</value>
+                <value>logAfterReturningAdvice</value>
+                <value>logAfterThrowingAdvice</value>
+            </list>
+        </property>
+    </bean>
+</beans>
+```
+
+```java
+package spring.aop.advice;
+
+public class LogAfterReturningAdvice implements AfterReturningAdvice {
+
+    @Override
+    public Object afterReturning(Object returnValue, Method method, Object[] args, Object target) throws Throwable {
+        System.out.println("returnValue : " + returnValue + ", method : " + method.getName());
+    }
+
+}
+```
+
+```java
+package spring.aop.advice;
+
+public class LogAfterThrowingAdvice implements ThrowsAdvice {
+
+    // 어떤 예외를 처리할 것인가에 따라 파라미터가 달라진다.
+    public void afterThrowing(IllegalArgumentException e) throws Throwable {
+        System.out.println("예외 발생 : " + e.getMessage());
+    }
+
+}
+```
+
+```java
+public class NewlecExam implements Exam {
+
+    // 생략
+
+    @Override
+    public int total() {
+        int result =  kor + eng + math + com;
+
+        if(kor > 100)
+            throw new IllegalArgumentException("유효하지 않은 국어점수");
+
+        try{
+            Thread.sleep(200);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
+    @Override
+    public float avg() {
+
+        float result = total() / 4.0f
+
+        return result;
+    }
+}
+```
+
+### PointCut 설정하는 방법
+
+#### 전통적인 방법
+
+> [강의 링크](https://bit.ly/3noiz0B)
+
+```xml
+<!-- setting.xml -->
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:util="http://www.springframe.org/schema/util"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="target" class="spring.aop.entity.NewlecExam" p:kor="101" p:eng="1" p:math="1" p:com="1"/>
+
+    <bean id="logAroundAdvice" class="spring.aop.advice.LogAroundAdvice" />
+    <bean id="logBeforeAdvice" class="spring.aop.advice.LogBeforeAdvice" />
+    <bean id="logAfterReturningAdvice" class="spring.aop.advice.LogAfterReturningAdvice" />
+    <bean id="logAfterThrowingAdvice" class="spring.aop.advice.LogAfterThrowingAdvice" />
+
+    <!-- total 함수만 before에 위빙이 됨 -->
+
+    <bean id="classicPointCut" class="org.springframework.aop.support.NameMatchMethodPointCut">
+        <property name="mappedName" value="total" />
+    </bean>
+
+    <bean id="classicBeforeAdvisor" class="org.springframework.aop.support.DefaultPointCutAdvisor">
+        <property name="advice" ref="LogBeforeAdvice" />
+        <property name="pointcut" ref="classicPointCut" />
+    </bean>
+
+    <bean id="proxy" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="target" ref="target" />
+        <property name="interceptorNames">
+            <list>
+                <value>logAroundAdvice</value>
+                <value>classicBeforeAdvisor</value>
+                <value>logAfterReturningAdvice</value>
+                <value>logAfterThrowingAdvice</value>
+            </list>
+        </property>
+    </bean>
+</beans>
+```
+
+#### 간소화된 Advisor
+
+> [강의 링크](https://bit.ly/30GsAfV)
+
+```xml
+<!-- setting.xml -->
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:util="http://www.springframe.org/schema/util"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="target" class="spring.aop.entity.NewlecExam" p:kor="101" p:eng="1" p:math="1" p:com="1"/>
+
+    <bean id="logAroundAdvice" class="spring.aop.advice.LogAroundAdvice" />
+    <bean id="logBeforeAdvice" class="spring.aop.advice.LogBeforeAdvice" />
+    <bean id="logAfterReturningAdvice" class="spring.aop.advice.LogAfterReturningAdvice" />
+    <bean id="logAfterThrowingAdvice" class="spring.aop.advice.LogAfterThrowingAdvice" />
+
+
+    <!-- 기존 코드
+
+    <bean id="classicPointCut" class="org.springframework.aop.support.NameMatchMethodPointCut">
+        <property name="mappedName" value="total" />
+    </bean>
+
+    <bean id="classicBeforeAdvisor" class="org.springframework.aop.support.DefaultPointCutAdvisor">
+        <property name="advice" ref="LogBeforeAdvice" />
+        <property name="pointcut" ref="classicPointCut" />
+    </bean>
+    
+    -->
+
+    <bean id="newBeforeAdvisor" class="org.springframework.aop.support.NameMatchMethodPointCutAdvisor">
+        <property name="advice" ref="LogBeforeAdvice" />
+        <property name="mappedNames">
+            <list>
+                <value>total<value>
+                <value>avg<value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="proxy" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="target" ref="target" />
+        <property name="interceptorNames">
+            <list>
+                <value>logAroundAdvice</value>
+                <value>newBeforeAdvisor</value>
+                <value>logAfterReturningAdvice</value>
+                <value>logAfterThrowingAdvice</value>
+            </list>
+        </property>
+    </bean>
+</beans>
 ```
