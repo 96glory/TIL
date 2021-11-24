@@ -1,5 +1,16 @@
 # CRA (Create React App)
 
+- [CRA (Create React App)](#cra-create-react-app)
+  - [1. 튜토리얼](#1-튜토리얼)
+    - [1.1. 튜토리얼](#11-튜토리얼)
+      - [1.1.1 CRA을 실행해보자](#111-cra을-실행해보자)
+      - [1.1.2. 프로젝트 초기 상태](#112-프로젝트-초기-상태)
+    - [1.2 폴더 구조](#12-폴더-구조)
+    - [1.3. 사용 가능한 스크립트](#13-사용-가능한-스크립트)
+    - [1.4 지원하는 브라우저 및 기능](#14-지원하는-브라우저-및-기능)
+      - [1.5 지원하는 브라우저](#15-지원하는-브라우저)
+    - [1.5 새 Release 배포하기](#15-새-release-배포하기)
+
 ## 1. 튜토리얼
 
 ### 1.1. 튜토리얼
@@ -78,7 +89,7 @@ my-app/
 - 대부분의 브라우저에서 지원하지만, IE 11 이하 버전은 [react-app-polyfill](https://github.com/facebook/create-react-app/blob/main/packages/react-app-polyfill/README.md)이 필요하다.
 - 지원되는 브라우저를 지정하기
   1. `package.json`에 `browserslist` 키를 사용해 정의하면 된다.
-     - ```json
+     - ```
        "browserslist": [
          "> 1%”,
          "last 2 versions",
