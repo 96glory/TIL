@@ -1,6 +1,6 @@
 # Flux
 
-> [참고 : Flux 공식 문서](https://haruair.github.io/flux/docs/overview.html)
+> [참고 : Flux 공식 문서](https://haruair.github.io/flux/docs/overview.html)  
 > [참고 : Flux로의 카툰 가이드](https://bestalign.github.io/translation/cartoon-guide-to-flux/)
 
 ## 동기
