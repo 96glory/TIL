@@ -1,5 +1,7 @@
 # CRA (Create React App)
 
+> [reference](https://create-react-app.dev/docs/getting-started)
+
 - [CRA (Create React App)](#cra-create-react-app)
   - [1. 튜토리얼](#1-튜토리얼)
     - [1.1. 튜토리얼](#11-튜토리얼)
@@ -47,6 +49,12 @@
     - [3.12. 운영 빌드](#312-운영-빌드)
       - [3.12.1. chunk](#3121-chunk)
       - [3.12.2. 정적 파일 캐싱](#3122-정적-파일-캐싱)
+  - [4. Testing](#4-testing)
+  - [5. Back-End와 통합하기](#5-back-end와-통합하기)
+  - [6. 배포](#6-배포)
+  - [7. Advanced Usage](#7-advanced-usage)
+    - [7.1. Advanced Configuration](#71-advanced-configuration)
+    - [7.2. Ejecting의 대체](#72-ejecting의-대체)
 
 ## 1. 튜토리얼
 
@@ -556,3 +564,46 @@ my-app/
 - `build/static` 경로 내의 파일들은 파일 명에 hash 값이 추가된다. 파일 내용이 변경되지 않은 경우 브라우저가 그 Asset을 재 다운로드하지 않도록 aggresive caching techniques를 사용할 수 있다. 이후 빌드에서 파일의 내용이 변경되면, 파일의 해쉬값이 달라진다.
 - 사용자에게 최고의 성능을 내기 위해 `index.html`의 [Cache-Control](https://jakearchibald.com/2016/caching-best-practices/) header를 적절히 설정해야 한다. 이 헤더를 사용하면 CDN뿐만 아니라 브라우저가 정적 Asset을 캐시하는 시간을 제어할 수 있다.
 - `Cache-Control: max-age=31536000` 와 `Cache-Control: no-cache`를 사용하면 브라우저가 항상 업데이트된 `index.html` 파일을 확인하고 모든 `build/static` 파일을 1년 동안 캐시할 수 있는 안전한 상태가 된다.
+
+## 4. Testing
+
+## 5. Back-End와 통합하기
+
+## 6. 배포
+
+## 7. Advanced Usage
+
+### 7.1. Advanced Configuration
+
+- 사용자 지정 환경 변수와 마찬가지로 아래 변수 앞에 `REACT_APP_`를 선언할 필요가 없다.
+
+| 변수                      | 개발 환경 | 운영 환경 | 사용 용도                                                                                                                                                                                                                                                                |
+| ------------------------- | :-------: | :-------: | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| BROWSER                   |   사용    |   무시    | **기본값으로 CRA가 기본 시스템 브라우저를 열지만**, 이를 오버라이드할 수 있는 옵션이다. `none`로 설정하면 완전히 비활성화된다.                                                                                                                                           |
+| BROWSER_ARGS              |   사용    |   무시    | `BROWSER` 환경변수가 설정되었을 때, `BROWSER_ARGS`로 설정된 모든 아규먼트가 브라우저 인스턴스로 전달된다. 여러 아규먼트는 공백으로 구분된 목록이다. **기본값으로 브라우저에 인스턴스가 전달되지 않는다.**                                                                |
+| HOST                      |   사용    |   무시    | **기본적으로 개발 웹 서버는 장치의 모든 hostname과 바인드된다. (ex. localhost, LAN, etc.)** `HOST`를 설정함으로써 다른 host를 사용할 수 있게 된다.                                                                                                                       |
+| PORT                      |   사용    |   무시    | **기본적으로, 개발 웹 서버는 3000번 포트를 바라보게 되고, 사용하고 있다면 유효한 다른 포트를 바라보게된다.** `PORT`를 설정함으로써 다른 포트 번호를 사용할 수 있게 된다.                                                                                                 |
+| HTTPS                     |   사용    |   무시    | `HTTPS`를 `true`로 설정하면, CRA는 개발 서버를 `https` 모드로 작동하게 된다.                                                                                                                                                                                             |
+| WDS_SOCKET_HOST           |   사용    |   무시    | 해당 값을 설정하면, CRA는 HMR을 위한 커스텀 웹소켓 hostname으로 개발서버를 실행한다. **일반적으로 `webpack-dev-server`의 기본값은 SockJS hostname을 위한 `window.location.hostname`이다.** 이 환경변수를 사용하여 한번에 둘 이상의 CRA 프로젝트에서 로컬 개발할 수 있다. |
+| WDS_SOCKET_PATH           |   사용    |   무시    | 해당 값을 설정하면, CRA는 HMR을 위한 커스텀 웹소켓 경로로 개발서버를 실행한다. **일반적으로 `webpack-dev-server`의 기본값은 SockJS pathname을 위한 `/sockjs-node`이다.** 이 환경변수를 사용하여 한번에 둘 이상의 CRA 프로젝트에서 로컬 개발할 수 있다.                   |
+| WDS_SOCKET_PORT           |   사용    |   무시    | 해당 값을 설정하면, CRA는 HMR을 위한 커스텀 웹소켓 포트로 개발서버를 실행한다. **일반적으로 `webpack-dev-server`의 기본값은 SockJS port를 위한 `window.location.port`이다.** 이 환경변수를 사용하여 한번에 둘 이상의 CRA 프로젝트에서 로컬 개발할 수 있다.               |
+| PUBLIC_URL                |   사용    |   사용    | CRA는 애플리케이션이 웹 서버의 root나 `package.json`에 명시된 하위 경로에 호스팅된다고 가정한다. 일반적으로, CRA는 hostname을 무시한다. 제공한 URL에 대해 Asset을 그대로 참조하도록 강제하기 위해 `PUBLIC_URL`을 사용할 수 있다.                                         |
+| BUILD_PATH                |   무시    |   사용    | **기본적으로, CRA는 컴파일된 Asset을 `build` 디렉토리에 저장한다.** 이 변수를 사용하면 CRA가 저장할 새 경로를 지정할 수 있다. 단, 프로젝트 루트의 상대적인 경로로 지정해야 한다.                                                                                         |
+| CI                        |   사용    |   사용    | `true`로 설정하면, CRA는 build 실패를 오류로 간주한다. 또한, test runner가 쳐다보지 못하게 한다.                                                                                                                                                                         |
+| REACT_EDITOR              |   사용    |   무시    | 개발 중 앱 충돌이 발생하면, stack trace가 포함된 error overlay를 확인할 수 있다. overlay를 클릭하면, CRA는 오류 관련 원본 파일을 열어준다. 오류에 대한 pull request를 보낼 수 있다.                                                                                      |
+| CHOKIDAR_USEPOLLING       |   사용    |   무시    | `true`로 설정하면, watcher는 VM 내부에서 필요에 따라 polling 모드로 실행된다. `npm start`가 변경 사항을 감지하지 못할 때, 유용하다.                                                                                                                                      |
+| GENERATE_SOURCEMAP        |   무시    |   사용    | `false`로 설정하면, 운영 빌드 시 source map이 생성되지 않는다.                                                                                                                                                                                                           |
+| INLINE_RUNTIME_CHUNK      |   무시    |   사용    | **기본값으로, CRA는 운영 빌드 시 런타임 스크립트를 index.html에 내장한다.** `false`로 설정하면, 내장되지 않고 `import`됩니다.                                                                                                                                            |
+| IMAGE_INLINE_SIZE_LIMIT   |   무시    |   사용    | **기본값으로, 10000 바이트 미만의 이미지는 base64에서 데이터 URI로 인코딩되고, CSS/JS 빌드 artifact에 inline됩니다.** 크기 제한을 제어하기 위해 이 변수를 설정합니다. `0`으로 설정하면 이미지의 인라이닝이 비활성화된다.                                                 |
+| FAST_REFRESH              |   사용    |   무시    | `false`로 설정하면, Fast Refresh 를 비활성화 한다. 페이지를 다시 로드하지 않고 실시간으로 컴포넌트들이 조정된다.                                                                                                                                                         |
+| TSC_COMPILE_ON_ERROR      |   사용    |   사용    | `true`로 설정하면, TS type check error가 있어도 TS 프로젝트를 빌드할 수 있다.                                                                                                                                                                                            |
+| ESLINT_NO_DEV_ERRORS      |   사용    |   무시    | `true`로 설정하면, 개발 중에는 ESLint 에러는 warning으로 표시된다.                                                                                                                                                                                                       |
+| DISABLE_ESLINT_PLUGIN     |   사용    |   사용    | `true`로 설정하면, `eslint-webpack-plugin`이 비활성화된다.                                                                                                                                                                                                               |
+| DISABLE_NEW_JSX_TRANSFORM |   사용    |   사용    | `true`로 설정하면, React 17에서 사용하는 [new JSX transform](https://reactjs.org/blog/2020/09/22/introducing-the-new-jsx-transform.html)이 비활성화된다.                                                                                                                 |
+
+### 7.2. Ejecting의 대체
+
+- Eject는 라이브러리 모든 것을 커스터마이즈할 수 있지만, 사용자가 직접 모든 Config와 Script를 관리해야 한다.
+- `React-App-Rewired`, `Customize-CRA`
+  - CRA를 eject하지 않고 커스터마이징할 수 있게 도와주는 라이브러리.
+  - [Link](https://medium.com/@jsh901220/create-react-app%EC%97%90%EC%84%9C-eject%EC%82%AC%EC%9A%A9%EC%95%88%ED%95%98%EA%B8%B0-customize-cra-react-app-rewired-10a83522ace0)
